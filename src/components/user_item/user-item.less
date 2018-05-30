@@ -10,8 +10,8 @@
   }
 
   &__avatar {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     padding: 10px;
     border-radius: 50%;
     -webkit-border-radius: 50%;
@@ -25,6 +25,62 @@
       -moz-border-radius: 50%;
       border-radius: 50%;
       vertical-align: middle;
+    }
+  }
+
+  &__detail {
+    width: calc(~"100% - 70px");
+    height: 70px;
+    border-bottom: 1px solid #dcdcdc;
+    position: relative;
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+    padding-left: 5px;
+
+    &__content {
+      flex-grow: 1;
+      position: relative;
+      display: -webkit-flex;
+      display: flex;
+      flex-direction: column;
+      width: 0;
+
+      &__nickname {
+        height: 50%;
+        position: relative;
+
+        & span {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+        }
+
+        & i {
+          font-weight: bold;
+          color: blue;
+        }
+        
+        &__single {
+          height: 100%;
+          line-height: 80px;
+        }
+      }
+
+      &__signature {
+        height: 50%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 14px;
+        color: gray;
+      }
+    }
+
+    &__more {
+      line-height: 70px;
+      padding: 0 15px;
+      color: gray;
     }
   }
 }

@@ -110,10 +110,10 @@ export default {
     },
     formatTime(time) {
       const da = new Date(time);
-      const year = da.getFullYear()+'年';
-      const month = da.getMonth()+1+'月';
-      const date = da.getDate()+'日';
-      return year+month+date;
+      const year = da.getFullYear() + '年';
+      const month = da.getMonth() + 1 + '月';
+      const date = da.getDate() + '日';
+      return year + month + date;
     },
   },
   components: {
