@@ -5,7 +5,7 @@
       <img :src="userObject.avatarUrl" alt="">
     </div>
     <div class="user__item__child user__item__detail">
-      userDetail
+      userDetail__cloned
     </div>
     <div class="user__item__child user__item__more">
       <i class="font-awesome-ellipsis-h"></i>
