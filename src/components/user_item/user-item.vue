@@ -4,7 +4,9 @@
     <div class="user__item__child user__item__avatar">
       <img :src="userObject.avatarUrl" alt="">
     </div>
-    <div class="user__item__child user__item__detail"></div>
+    <div class="user__item__child user__item__detail">
+      userDetail
+    </div>
     <div class="user__item__child user__item__more">
       <i class="font-awesome-ellipsis-h"></i>
     </div>
