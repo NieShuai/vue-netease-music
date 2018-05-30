@@ -1,0 +1,30 @@
+.user__item {
+  position: relative;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &__child {
+    position: relative;
+  }
+
+  &__avatar {
+    width: 60px;
+    height: 60px;
+    padding: 10px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    position: relative;
+
+    & img {
+      width: 100%;
+      height: 100%;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%;
+      vertical-align: middle;
+    }
+  }
+}

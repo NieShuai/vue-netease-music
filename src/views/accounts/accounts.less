@@ -1,0 +1,128 @@
+.accounts {
+  height: 100%;
+  position: relative;
+
+  &__content {
+    height: calc(~'100% - 45px');
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    background-color: #efefef;
+
+    &__item {
+      background-color: #fff;
+    }
+
+    &__card {
+      height: 150px;
+
+      &__infor {
+        padding: 15px;
+        border-bottom: 1px solid #efefef;
+        position: relative;
+
+        &::after {
+          content: '';
+          display: block;
+          clear: both;
+        }
+
+        &__avatar {
+          float: left;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          -webkit-border-radius: 50%;
+          -moz-border-radius: 50%;
+          position: relative;
+
+          & img {
+            width: 100%;
+            height: 100%;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            vertical-align: middle;
+          }
+        }
+
+        &__general {
+          float: left;
+          margin-left: 15px;
+
+          &__nick-name {
+            line-height: 35px;
+          }
+
+          &__lv {
+            line-height: 30px;
+            position: relative;
+
+            &::after {
+              content: '';
+              display: block;
+              clear: both;
+            }
+
+            &__container {
+              font-style: italic;
+              font-weight: bold;
+              border: 1px solid #c4c4c4;
+              color: #c4c4c4;
+              float: left;
+              font-size: 12px;
+              padding: 0 5px;
+              line-height: 1.8;
+              border-radius: 10px;
+              -webkit-border-radius: 10px;
+              -moz-border-radius: 10px;
+            }
+          }
+        }
+
+        &__sign {
+          float: right;
+          line-height: 60px;
+        }
+      }
+
+      &__detail {
+        // height: 30px;
+        padding: 10px 0;
+        display: -webkit-flex; /* Safari */
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        &::after {
+          content: '';
+          display: block;
+          clear: both;
+        }
+
+        &__item {
+          flex-grow: 1;
+          position: relative;
+          width: 0;
+          text-align: center;
+          border-left: 1px solid #efefef;
+
+          &__up {
+            color: #c4c4c4;
+            font-size: 12px;
+
+            &__is-icon {
+              font-size: 16px;
+            }
+          }
+
+          &__bottom {
+            &__is-icon {
+              font-size: 14px;
+              color: #c4c4c4;
+            }
+          }
+        }
+      }
+    }
+  }
+}
