@@ -6,7 +6,10 @@
     <div class="user__item__child user__item__detail">
       <div class="user__item__detail__content">
         <div :class="nickNameClass">
-          <span>{{ userObject.nickname }} <i :class="userObject.gender === 1 ? 'font-awesome-mars' : 'font-awesome-venus'"></i></span>
+          <span>
+            {{ userObject.nickname }} 
+            <i :class="userObject.gender === 1 ? 'font-awesome-mars' : 'font-awesome-venus'"></i>
+          </span>
         </div>
         <div
           v-if="userObject.signature && userObject.signature !== ''"
@@ -34,7 +37,8 @@ export default {
     nickNameClass() {
       return {
         'user__item__detail__content__nickname': 1,
-        'user__item__detail__content__nickname__single': !this.userObject.signature || this.userObject.signature === '',
+        'user__item__detail__content__nickname__single':
+          !this.userObject.signature || this.userObject.signature === '',
       };
     },
   },

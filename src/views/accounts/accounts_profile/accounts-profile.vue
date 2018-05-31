@@ -1,5 +1,5 @@
 <template>
-  <div class="accounts-profile">
+  <div class="accounts__profile">
     <head-bar title="我的资料" show-back></head-bar>
   </div>
 </template>

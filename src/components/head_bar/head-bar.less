@@ -2,7 +2,6 @@
   background-color: @primary;
   text-align: center;
   height: 45px;
-  line-height: 45px;
   position: relative;
 
   &__back {
@@ -11,11 +10,113 @@
     left: 10px;
     line-height: 45px;
     font-size: 30px;
-    // -webkit-text-stroke: 2px @primary;
   }
 
   &__title {
     color: #fff;
+    line-height: 45px;
     font-size: 20px;
+  }
+
+  &__music-player__trigger {
+    display: block;
+    position: absolute;
+    right: 10px;
+    top: 0;
+    color: #fff;
+    line-height: 45px;
+    font-size: 20px;
+    transform: rotate(-90deg);
+  }
+}
+
+.music-player {
+  width: 100%;
+  height: 100%;
+
+  &__header {
+    height: 45px;
+    background-color: @primary;
+    // border-bottom: 1px solid #dcdcdc;
+  }
+
+  &__content {
+    height: calc(~'100% - 45px');
+    overflow: hidden;
+    position: relative;
+    background-color: #dcdcdc;
+
+    &__panel {
+      height: calc(~'100% - 81px');
+
+      &__mask {
+        position: relative;
+        height: 100%;
+
+        &__needle {
+          position: absolute;
+          width: 100px;
+          top: -20px;
+          left: calc(~"50% - 25px");
+          transform: rotateZ(-25deg);
+          z-index: 10;
+          transform-origin: 20px 20px;
+          transition: transform 0.4s;
+
+          &--playing {
+            transform: rotateZ(0deg);
+          }
+        }
+
+        &__disk {
+          height: calc(~"100% - 60px");
+          position: relative;
+
+          &__container {
+            height: 100%;
+            position: relative;
+
+            & img {
+              width: 300px;
+              position: absolute;
+              top: 60px;
+              left: calc(~"50% - 150px");
+            }
+          }
+        }
+
+        &__buttons {
+          height: 60px;
+          background-color: #fff;
+        }
+      }
+    }
+
+    &__controls {
+      &__progress {
+        padding: 5px 0;
+
+        & .van-progress {
+          height: 1px;
+          margin: 5px 0;
+
+          & .van-progress__pivot {
+            width: 12px;
+            height: 12px;
+            display: block;
+            font-size: 55px;
+            min-width: initial;
+            margin-left: 0 !important;
+            color: @primary !important;
+            background-color: #fff !important;
+          }
+        }
+      }
+
+      &__play {
+        font-size: 60px;
+        color: #fff;
+      }
+    }
   }
 }

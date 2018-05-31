@@ -6,6 +6,7 @@
     height: calc(~'100% - 45px');
     overflow: auto;
     -webkit-overflow-scrolling: touch;
+    position: relative;
     background-color: #efefef;
 
     &__item {
@@ -86,9 +87,8 @@
       }
 
       &__detail {
-        // height: 30px;
         padding: 10px 0;
-        display: -webkit-flex; /* Safari */
+        display: -webkit-flex;
         display: flex;
         flex-direction: row;
         align-items: center;

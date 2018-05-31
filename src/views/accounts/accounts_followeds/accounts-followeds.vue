@@ -1,22 +1,58 @@
 <template>
-  <div class="accounts-followeds">
+  <div class="accounts__followeds">
     <head-bar title="粉丝" show-back></head-bar>
+    <div class="accounts__followeds__content">
+      <loading
+        v-if="showLoading"
+        show-in-middle></loading>
+      <user-item
+        v-else
+        v-for="(followed, index) in followeds"
+        :key="index"
+        :user-object="followed">
+      </user-item>
+    </div>
   </div>
 </template>
 
 <script>
 import headBar from 'components/head_bar/head-bar';
+import userItem from 'components/user_item/user-item';
+import loading from 'components/loading/loading';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'accountsFolloweds',
   data() {
-    return {};
+    return {
+      showLoading: true,
+      followeds: [],
+    };
   },
-  mounted() {},
-  computed: {},
+  mounted() {
+    this.showLoading = true;
+    this.axios.get('/user/followeds', {
+      params: {
+        uid: this.uid,
+      },
+    }).then((res) => {
+      const { data } = res;
+      if (data.code === 200) {
+        this.followeds = data.followeds;
+        this.showLoading = false;
+      }
+    });
+  },
+  computed: {
+    ...mapGetters([
+      'uid',
+    ]),
+  },
   methods: {},
   components: {
     headBar,
+    userItem,
+    loading,
   },
 };
 </script>

@@ -2,7 +2,12 @@
   <div class="accounts">
     <head-bar title="帐号"></head-bar>
     <div class="accounts__content">
-      <div class="accounts__content__item accounts__content__card">
+      <loading
+        v-if="showLoading"
+        show-in-middle></loading>
+      <div
+        v-else
+        class="accounts__content__item accounts__content__card">
         <div class="accounts__content__card__infor">
           <div class="accounts__content__card__infor__avatar">
             <img :src="avatar" alt="">
@@ -58,12 +63,14 @@
 
 <script>
 import headBar from 'components/head_bar/head-bar';
+import loading from 'components/loading/loading';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'accounts',
   data() {
     return {
+      showLoading: true,
       isChild: false,
       avatar: '',
       nickName: 'nickName',
@@ -89,7 +96,7 @@ export default {
     };
   },
   mounted() {
-    // this.updateUid(0);
+    this.showLoading = true;
     this.axios.get('/user/detail', {
       params: {
         uid: this.uid,
@@ -104,13 +111,14 @@ export default {
         this.detailItems[0].value = profile.eventCount;
         this.detailItems[1].value = profile.follows;
         this.detailItems[2].value = profile.followeds;
+        this.showLoading = false;
       }
     });
   },
   watch: {
-    $router(newVal, oldVal) {
-      console.log(newVal, oldVal);
-    },
+    // $router(newVal, oldVal) {
+    //   console.log(newVal, oldVal);
+    // },
   },
   computed: {
     ...mapGetters([
@@ -128,6 +136,7 @@ export default {
   },
   components: {
     headBar,
+    loading,
   },
 };
 </script>

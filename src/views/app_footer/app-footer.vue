@@ -25,7 +25,7 @@ export default {
         router: '/discovery',
       }, {
         name: '视频',
-        iconClass: 'video-camera',
+        iconClass: 'youtube-play',
         router: '/videos',
       }, {
         name: '我的',

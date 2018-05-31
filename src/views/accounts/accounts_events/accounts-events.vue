@@ -2,7 +2,11 @@
   <div class="accounts__events">
     <head-bar title="动态" show-back></head-bar>
     <div class="accounts__events__content">
+      <loading
+        v-if="showLoading"
+        show-in-middle></loading>
       <div
+        v-else
         v-for="(event, index) in events"
         :key="index"
         class="accounts__events__content__item">
@@ -59,17 +63,20 @@
 
 <script>
 import headBar from 'components/head_bar/head-bar';
+import loading from 'components/loading/loading';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'accountsEvents',
   data() {
     return {
+      showLoading: true,
       user: null,
       events: [],
     };
   },
   mounted() {
+    this.showLoading = true;
     this.axios.get('/user/event', {
       params: {
         uid: this.uid,
@@ -84,6 +91,7 @@ export default {
             this.events.push(element);
           });
         }
+        this.showLoading = false;
       }
     });
   },
@@ -118,6 +126,7 @@ export default {
   },
   components: {
     headBar,
+    loading,
   },
 };
 </script>
