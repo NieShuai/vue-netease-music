@@ -4,7 +4,6 @@ import * as actions from 'store/actions/uid';
 
 const state = {
   uid: 88653873,
-  songId: 386538,
 };
 
 const mutations = {

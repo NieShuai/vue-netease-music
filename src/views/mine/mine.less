@@ -1,0 +1,75 @@
+.mine {
+  &__title {
+    font-size: 12px;
+    color: gray;
+    padding: 5px;
+    background-color: #dcdcdc;
+  }
+
+  &__content {
+    & .van-cell-swipe {
+      position: relative;
+      height: 70px;
+    }
+
+    & .van-cell-swipe__wrapper {
+      background-color: #fff;
+    }
+
+    & .van-cell-swipe__right {
+      background-color: @primary;
+      line-height: 70px;
+      text-align: center;
+      width: 70px;
+      color: #fff;
+    }
+
+    &__item {
+      height: 70px;
+      position: relative;
+
+      &::after {
+        content: '';
+        display: block;
+        clear: both;
+      }
+
+      &__cover {
+        padding: 5px;
+        float: left;
+        margin-right: 5px;
+
+        & img {
+          border-radius: 3px;
+          width: 60px;
+          height: 60px;
+        }
+      }
+
+      &__infor {
+        height: 100%;
+        width: calc(~"100% - 75px");
+        box-sizing: border-box;
+        border-bottom: 1px solid #dcdcdc;
+        float: left;
+        position: relative;
+
+        &__name {
+          height: 50%;
+          position: relative;
+
+          & span {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+          }
+        }
+
+        &__counts {
+          font-size: 12px;
+          color: gray;
+        }
+      }
+    }
+  }
+}

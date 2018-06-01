@@ -65,6 +65,7 @@
 import headBar from 'components/head_bar/head-bar';
 import loading from 'components/loading/loading';
 import { mapGetters, mapActions } from 'vuex';
+import { getEvent } from 'api/api';
 
 export default {
   name: 'accountsEvents',
@@ -77,11 +78,7 @@ export default {
   },
   mounted() {
     this.showLoading = true;
-    this.axios.get('/user/event', {
-      params: {
-        uid: this.uid,
-      },
-    }).then((res) => {
+    getEvent(this.uid).then((res) => {
       const { data } = res;
       if (data.code === 200) {
         if (data.events.length > 0) {

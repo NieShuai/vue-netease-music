@@ -65,6 +65,7 @@
 import headBar from 'components/head_bar/head-bar';
 import loading from 'components/loading/loading';
 import { mapGetters, mapActions } from 'vuex';
+import { getUserDetail } from 'api/api';
 
 export default {
   name: 'accounts',
@@ -97,11 +98,7 @@ export default {
   },
   mounted() {
     this.showLoading = true;
-    this.axios.get('/user/detail', {
-      params: {
-        uid: this.uid,
-      },
-    }).then((res) => {
+    getUserDetail(this.uid).then((res) => {
       const { data } = res;
       if (data.code === 200) {
         const { profile, level } = data;

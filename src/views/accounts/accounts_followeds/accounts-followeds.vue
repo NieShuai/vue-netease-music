@@ -20,6 +20,7 @@ import headBar from 'components/head_bar/head-bar';
 import userItem from 'components/user_item/user-item';
 import loading from 'components/loading/loading';
 import { mapGetters, mapActions } from 'vuex';
+import { getFolloweds } from 'api/api';
 
 export default {
   name: 'accountsFolloweds',
@@ -31,11 +32,7 @@ export default {
   },
   mounted() {
     this.showLoading = true;
-    this.axios.get('/user/followeds', {
-      params: {
-        uid: this.uid,
-      },
-    }).then((res) => {
+    getFolloweds(this.uid).then((res) => {
       const { data } = res;
       if (data.code === 200) {
         this.followeds = data.followeds;

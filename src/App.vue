@@ -11,11 +11,25 @@
 
 <script>
 import appFooter from 'views/app_footer/app-footer';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'App',
   components: {
     appFooter,
+  },
+  computed: {
+    ...mapGetters([
+      'uid',
+    ]),
+  },
+  methods: {
+    ...mapActions([
+      'setMyList',
+    ]),
+  },
+  mounted() {
+    this.setMyList(this.uid);
   },
 };
 </script>
