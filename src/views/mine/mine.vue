@@ -1,5 +1,6 @@
 <template>
   <div class="mine">
+    <head-bar title="我的音乐"></head-bar>
     <div class="mine__title">
       我创建的歌单({{ listSize }})
     </div>
@@ -26,6 +27,7 @@
 </template>
 
 <script>
+import headBar from 'components/head_bar/head-bar';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -37,6 +39,9 @@ export default {
     listSize() {
       return this.myList.length;
     },
+  },
+  components: {
+    headBar,
   },
 };
 </script>

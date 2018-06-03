@@ -12,10 +12,10 @@ export function setMyList({ commit }, uid) {
       });
       if (list.length > 0) {
         getListDetail(list[0].id).then((response) => {
-          const { data } = response;
-          if (data.code === 200) {
+          const { data: listData } = response;
+          if (listData.code === 200) {
             commit(types.SET_PLAYING_LIST, {
-              param: data.playlist.trackIds,
+              param: listData.playlist.trackIds,
             });
           }
         });
