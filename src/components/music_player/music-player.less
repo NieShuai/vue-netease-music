@@ -1,45 +1,73 @@
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .music-player {
   width: 100%;
   height: 100%;
   position: relative;
   background-color: #dcdcdc;
 
+  &__back {
+    color: #fff;
+    position: absolute;
+    left: 10px;
+    line-height: 45px;
+    font-size: 30px;
+  }
+
   &__inner {
     width: 100%;
     height: 100%;
     position: relative;
-    z-index: 1;
+    display: flex;
+    flex-direction: column;
 
-    // &:after {
-    //   content: '';
-    //   position: absolute;
-    //   top: 0;
-    //   left: 0;
-    //   right: 0;
-    //   bottom: 0;
-    //   // background-color: rgba(255,255,255,0.8);
-    //   z-index: -1;
-    // }
-
-    // &::after {
-    //   background-image: url('http://p1.music.126.net/oALpJH1SwQE9eLaYQHLQHw==/109951163071285497.jpg');
-    //   background-position: center top;
-    //   background-size: cover;
-    //   filter: blur(1px);
-    // }
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      -webkit-filter: blur(20px);
+      filter: blur(20px);
+      background-size: cover;
+      background-position: center top;
+      margin: -50px;
+    }
   }
 
   &__header {
     height: 45px;
-    color:#ffffff;
-    // border-bottom: 1px solid #dcdcdc;
+    color: #ffffff;
+    z-index: 0;
+    position: relative;
+
+    &__content {
+      text-align: center;
+      height: 100%;
+      padding-top: 5px;
+
+      &__title {
+        font-size: 16px;
+      }
+
+      &__artist {
+        font-size: 12px;
+      }
+    }
   }
 
   &__content {
     height: calc(~'100% - 45px');
     overflow: hidden;
     position: relative;
-    // background-color: #dcdcdc;
 
     &__panel {
       height: calc(~'100% - 81px');
@@ -53,7 +81,7 @@
           width: 100px;
           height: 150px;
           top: -20px;
-          left: calc(~"50% - 20px");
+          left: calc(~'50% - 20px');
           transform: rotateZ(-25deg);
           z-index: 10;
           transform-origin: 20px 20px;
@@ -65,16 +93,41 @@
         }
 
         &__disk {
-          height: calc(~"100% - 50px");
+          height: calc(~'100% - 50px');
           position: relative;
 
           &__container {
-            height: 100%;
-            position: relative;
+            width: 300px;
+            height: 300px;
+            position: absolute;
+            top: 70px;
+            left: 10%;
+            border-radius: 50%;
+            overflow: hidden;
+            background-color: rgba(221,221,221,0.1);
 
-            & img {
-              width: 80%;
-              margin-top: 67px;
+            &__animation {
+              position: relative;
+              width: 100%;
+              height: 100%;
+            }
+
+            &__disc-item {
+              width: 300px;
+              height: 300px;
+              position: absolute;
+              top: 0;
+              left: 0;
+              z-index: 1;
+            }
+
+            &__cover-item {
+              z-index: 0;
+              width: 200px;
+              height: 200px;
+              position: absolute;
+              top: 50px;
+              left: 50px;
             }
           }
         }
@@ -121,4 +174,11 @@
       }
     }
   }
+}
+
+.playing {
+  animation-name: rotate;
+  animation-duration: 15s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }

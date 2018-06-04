@@ -5,9 +5,12 @@
     <div class="music-player__inner">
       <div class="music-player__header">
         <i
-          class="font-awesome-angle-left head-bar__back"
+          class="font-awesome-angle-left music-player__back"
           @click="hideMusicPlayer"></i>
-        {{ title }}{{ artist }}
+        <div class="music-player__header__content">
+          <div class="music-player__header__content__title">{{ title }}</div>
+          <div class="music-player__header__content__artist">{{ artist }}</div>
+        </div>
       </div>
       <div class="music-player__content">
         <audio
@@ -24,11 +27,14 @@
               :src="playerResouces.needle"
               :class="{
                 'music-player__content__panel__mask__needle': 1,
-                'music-player__content__panel__mask__needle--playing': playing
+                'music-player__content__panel__mask__needle--playing': playing,
               }">
             <div class="music-player__content__panel__mask__disk">
               <div class="music-player__content__panel__mask__disk__container">
-                <img :src="playerResouces.disk">
+                <div class="music-player__content__panel__mask__disk__container__animation">
+                  <img :src="playerResouces.disk" class="music-player__content__panel__mask__disk__container__disc-item">
+                  <img :src="coverUrl" class="music-player__content__panel__mask__disk__container__cover-item">
+                </div>
               </div>
             </div>
             <div class="music-player__content__panel__mask__buttons">
@@ -93,7 +99,21 @@ export default {
       };
     },
   },
-  watch: {},
+  watch: {
+    coverUrl(newVal) {
+      document.styleSheets[0].addRule(
+        '.music-player__inner::before',
+        `background-image: url(${newVal})`);
+      // document.styleSheets[0].insertRule('.red::before { color: green }', 0);
+    },
+    playing(newVal) {
+      if (newVal) {
+        this.runAnimation();
+      } else {
+        this.pauseAnimation();
+      }
+    },
+  },
   mounted() {
     if (this.playingList.length > 0) {
       this.songId = this.playingList[0].id;
@@ -109,6 +129,20 @@ export default {
     }
   },
   methods: {
+    runAnimation(){
+      const containerDom = document.querySelector('.music-player__content__panel__mask__disk__container');
+      const animationDom = document.querySelector('.music-player__content__panel__mask__disk__container__animation');
+      animationDom.classList.add('playing');
+    },
+    pauseAnimation(){
+      const containerDom = document.querySelector('.music-player__content__panel__mask__disk__container');
+      const animationDom = document.querySelector('.music-player__content__panel__mask__disk__container__animation');
+      const aTransform = getComputedStyle(animationDom).transform;
+      const cTransform = getComputedStyle(containerDom).transform;
+      containerDom.style.transform =
+        cTransform === 'none' ? aTransform : aTransform.concat(' ', cTransform);
+      animationDom.classList.remove('playing');
+    },
     hideMusicPlayer() {
       this.$emit('hide-music-player');
     },
