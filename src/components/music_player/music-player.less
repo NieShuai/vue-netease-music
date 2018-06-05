@@ -70,7 +70,7 @@
     position: relative;
 
     &__panel {
-      height: calc(~'100% - 81px');
+      height: calc(~'100% - 82px');
 
       &__mask {
         position: relative;
@@ -101,7 +101,7 @@
             height: 300px;
             position: absolute;
             top: 70px;
-            left: 10%;
+            left: calc(~'50% - 150px');
             border-radius: 50%;
             overflow: hidden;
             background-color: rgba(221,221,221,0.1);
@@ -149,23 +149,31 @@
 
     &__controls {
       &__progress {
-        padding: 5px 0;
+        display: flex;
+        align-items: center;
 
-        & .van-progress {
-          height: 1px;
-          margin: 5px 0;
+        &__time {
+          margin: 0 15px;
+          color: #fff;
+          font-size: 12px;
+        }
 
-          & .van-progress__pivot {
-            width: 12px;
-            height: 12px;
-            display: block;
-            font-size: 55px;
-            min-width: initial;
-            margin-left: 0 !important;
-            color: @primary !important;
-            background-color: #fff !important;
+        &__slider {
+          flex-grow: 2;
+
+          & .van-slider__button {
+            width: 14px;
+            height: 14px;
+          }
+
+          & .van-slider__bar {
+            background-color: @primary;
           }
         }
+      }
+
+      &__buttons {
+        margin-top: 10px;
       }
 
       &__play {

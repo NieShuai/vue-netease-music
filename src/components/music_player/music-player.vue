@@ -48,10 +48,21 @@
         </div>
         <div class="music-player__content__controls">
           <div class="music-player__content__controls__progress">
-            <van-progress
-              pivot-text=""
-              color="red"
-              :percentage="10"/>
+            <div
+              class="music-player__content__controls__progress__item
+                music-player__content__controls__progress__time">{{ playProgress }}</div>
+            <div
+              class="music-player__content__controls__progress__item
+                music-player__content__controls__progress__slider">
+              <van-slider
+                v-model="progress"
+                :step="0.1"
+                @touchstart.native="onTouchStart"
+                @touchend.native="onTouchEnd"/>
+            </div>
+            <div
+              class="music-player__content__controls__item
+                music-player__content__controls__progress__time">{{ musicLength }}</div>
           </div>
           <div class="music-player__content__controls__buttons">
             <i
@@ -73,6 +84,7 @@ const playerResouces = {
 
 import { mapGetters, mapActions } from 'vuex';
 import { getMusicDetail } from 'api/api';
+import { formatTime } from 'util/help';
 
 export default {
   name: 'musicPlayer',
@@ -85,6 +97,10 @@ export default {
       coverUrl: '',
       title: '',
       artist: '',
+      progress: 0,
+      time: 0,
+      playProgress: '00:00',
+      isChangingProgress: false,
     };
   },
   computed: {
@@ -97,6 +113,9 @@ export default {
         backgroundSize: 'cover',
         backgroundPosition: 'center top',
       };
+    },
+    musicLength() {
+      return formatTime(this.time / 1000);
     },
   },
   watch: {
@@ -124,11 +143,37 @@ export default {
           this.coverUrl = songObj.al.picUrl;
           this.title = songObj.name;
           this.artist = songObj.ar[0].name;
+          this.time = songObj.dt;
         }
       });
     }
+    this.$nextTick(() => {
+      this.$refs.player.ontimeupdate = this.timeUpdated;
+    });
   },
   methods: {
+    timeUpdated() {
+      const curTime = this.$refs.player.currentTime;
+      this.playProgress = formatTime(curTime);
+      if (!this.isChangingProgress) {
+        this.progress = (curTime * 1000) / this.time * 100;
+      }
+    },
+    onTouchStart() {
+      this.isChangingProgress = true;
+    },
+    onTouchEnd() {
+      const player = this.$refs.player;
+      const isPaused = player.paused;
+      player.pause();
+      this.playing = false;
+      player.currentTime = (this.progress * this.time) / 100 / 1000;
+      if (!isPaused) {
+        player.play();
+        this.playing = true;
+      }
+      this.isChangingProgress = false;
+    },
     runAnimation(){
       const containerDom = document.querySelector('.music-player__content__panel__mask__disk__container');
       const animationDom = document.querySelector('.music-player__content__panel__mask__disk__container__animation');
