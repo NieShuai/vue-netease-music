@@ -7,7 +7,7 @@
       <div class="user__item__detail__content">
         <div :class="nickNameClass">
           <span>
-            {{ userObject.nickname }} 
+            {{ userObject.nickname }}
             <i :class="userObject.gender === 1 ? 'font-awesome-mars' : 'font-awesome-venus'"></i>
           </span>
         </div>

@@ -23,3 +23,11 @@ export function setMyList({ commit }, uid) {
     }
   });
 }
+
+export function setMusicIndex({ commit }, param) {
+  commit(types.SET_MUSIC_INDEX, { param });
+}
+
+export function setPlayingType({ commit }, param) {
+  commit(types.SET_PLAYING_TYPE, { param });
+}

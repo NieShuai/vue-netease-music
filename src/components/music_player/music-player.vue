@@ -19,7 +19,9 @@
           ref="player"
           :src="`http://music.163.com/song/media/outer/url?id=${songId}.mp3`"
           hidden
-          controls>
+          controls
+          @canplaythrough="onCanPlayThrough"
+          @ended="onEnded">
         </audio>
         <div class="music-player__content__panel">
           <div class="music-player__content__panel__mask">
@@ -32,8 +34,12 @@
             <div class="music-player__content__panel__mask__disk">
               <div class="music-player__content__panel__mask__disk__container">
                 <div class="music-player__content__panel__mask__disk__container__animation">
-                  <img :src="playerResouces.disk" class="music-player__content__panel__mask__disk__container__disc-item">
-                  <img :src="coverUrl" class="music-player__content__panel__mask__disk__container__cover-item">
+                  <img
+                    :src="playerResouces.disk"
+                    class="music-player__content__panel__mask__disk__container__disc-item">
+                  <img
+                    :src="coverUrl"
+                    class="music-player__content__panel__mask__disk__container__cover-item">
                 </div>
               </div>
             </div>
@@ -50,7 +56,9 @@
           <div class="music-player__content__controls__progress">
             <div
               class="music-player__content__controls__progress__item
-                music-player__content__controls__progress__time">{{ playProgress }}</div>
+                music-player__content__controls__progress__time">
+              {{ playProgress }}
+            </div>
             <div
               class="music-player__content__controls__progress__item
                 music-player__content__controls__progress__slider">
@@ -59,16 +67,30 @@
                 :step="0.1"
                 @touchstart.native="onTouchStart"
                 @touchend.native="onTouchEnd"/>
+              <van-loading v-if="playing && !songLoaded" type="spinner" class="music__loading"/>
             </div>
             <div
               class="music-player__content__controls__item
-                music-player__content__controls__progress__time">{{ musicLength }}</div>
+                music-player__content__controls__progress__time">
+              {{ musicLength }}
+            </div>
           </div>
           <div class="music-player__content__controls__buttons">
             <i
-              class="music-player__content__controls__play"
+              class="music-player__content__controls__buttons__item"
+              :class="playingTypeClass"
+              @click="changeType"></i>
+            <i
+              class="font-awesome-step-backward music-player__content__controls__buttons__item"
+              @click="playPre"></i>
+            <i
+              class="music-player__content__controls__buttons__item music-player__content__controls__play"
               :class="playing ? 'font-awesome-pause-circle-o' : 'font-awesome-play-circle-o'"
               @click="playMusic"></i>
+            <i
+              class="font-awesome-step-forward music-player__content__controls__buttons__item"
+              @click="playNext"></i>
+            <i class="font-awesome-list music-player__content__controls__buttons__item"></i>
           </div>
         </div>
       </div>
@@ -77,14 +99,14 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+import { getMusicDetail } from 'api/api';
+import { formatTime } from 'util/help';
+
 const playerResouces = {
   disk: require('../../assets/player/player_disc.png'),
   needle: require('../../assets/player/player_needle.png'),
 };
-
-import { mapGetters, mapActions } from 'vuex';
-import { getMusicDetail } from 'api/api';
-import { formatTime } from 'util/help';
 
 export default {
   name: 'musicPlayer',
@@ -101,12 +123,24 @@ export default {
       time: 0,
       playProgress: '00:00',
       isChangingProgress: false,
+      songLoaded: false,
+      resetAnimation: false,
     };
   },
   computed: {
     ...mapGetters([
       'playingList',
+      'musicIndex',
+      'playingType',
     ]),
+    playingTypeClass() {
+      if (this.playingType === 1) {
+        return 'font-awesome-random';
+      } else if (this.playingType === 2) {
+        return 'font-awesome-rotate-left';
+      }
+      return 'font-awesome-retweet';
+    },
     musicPlayerStyle() {
       return {
         backgroundImage: `url(${this.coverUrl})`,
@@ -126,32 +160,91 @@ export default {
       // document.styleSheets[0].insertRule('.red::before { color: green }', 0);
     },
     playing(newVal) {
-      if (newVal) {
+      if (newVal && this.songLoaded) {
         this.runAnimation();
       } else {
         this.pauseAnimation();
       }
     },
+    songLoaded(newVal) {
+      if (newVal && this.playing) {
+        this.runAnimation();
+      }
+    },
+    musicIndex(newVal) {
+      this.progress = 0;
+      this.getMusicDetail(newVal);
+      this.songLoaded = false;
+      this.$nextTick(() => {
+        this.playMusic();
+      });
+    },
   },
   mounted() {
-    if (this.playingList.length > 0) {
-      this.songId = this.playingList[0].id;
-      getMusicDetail(this.songId).then((res) => {
-        const { data } = res;
-        if (data.code === 200) {
-          const songObj = data.songs[0];
-          this.coverUrl = songObj.al.picUrl;
-          this.title = songObj.name;
-          this.artist = songObj.ar[0].name;
-          this.time = songObj.dt;
-        }
-      });
-    }
+    this.getMusicDetail(this.musicIndex);
     this.$nextTick(() => {
       this.$refs.player.ontimeupdate = this.timeUpdated;
     });
   },
   methods: {
+    ...mapActions([
+      'setMusicIndex',
+      'setPlayingType',
+    ]),
+    changeType() {
+      let newType = this.playingType + 1;
+      if (newType === 3) {
+        newType = 0;
+      }
+      this.setPlayingType(newType);
+    },
+    getMusicDetail(mIndex) {
+      if (this.playingList.length > 0) {
+        this.songId = this.playingList[mIndex].id;
+        getMusicDetail(this.songId).then((res) => {
+          const { data } = res;
+          if (data.code === 200) {
+            const songObj = data.songs[0];
+            this.coverUrl = songObj.al.picUrl;
+            this.title = songObj.name;
+            this.artist = songObj.ar[0].name;
+            this.time = songObj.dt;
+          }
+        });
+      }
+    },
+    onEnded() {
+      this.playNext();
+    },
+    playNext() {
+      this.resetAnimation = true;
+      this.$refs.player.pause();
+      this.playing = false;
+      let newPlayingIndex = 0;
+      if (this.playingType === 0) {
+        newPlayingIndex = this.musicIndex + 1;
+        if (newPlayingIndex > this.playingList.length - 1) {
+          newPlayingIndex = 0;
+        }
+      }
+      this.setMusicIndex(newPlayingIndex);
+    },
+    playPre() {
+      this.resetAnimation = true;
+      this.$refs.player.pause();
+      this.playing = false;
+      let newPlayingIndex = 0;
+      if (this.playingType === 0) {
+        newPlayingIndex = this.musicIndex - 1;
+        if (newPlayingIndex < 0) {
+          newPlayingIndex = this.playingList.length - 1;
+        }
+      }
+      this.setMusicIndex(newPlayingIndex);
+    },
+    onCanPlayThrough() {
+      this.songLoaded = true;
+    },
     timeUpdated() {
       const curTime = this.$refs.player.currentTime;
       this.playProgress = formatTime(curTime);
@@ -174,18 +267,23 @@ export default {
       }
       this.isChangingProgress = false;
     },
-    runAnimation(){
+    runAnimation() {
       const containerDom = document.querySelector('.music-player__content__panel__mask__disk__container');
       const animationDom = document.querySelector('.music-player__content__panel__mask__disk__container__animation');
       animationDom.classList.add('playing');
     },
-    pauseAnimation(){
+    pauseAnimation() {
       const containerDom = document.querySelector('.music-player__content__panel__mask__disk__container');
       const animationDom = document.querySelector('.music-player__content__panel__mask__disk__container__animation');
-      const aTransform = getComputedStyle(animationDom).transform;
-      const cTransform = getComputedStyle(containerDom).transform;
-      containerDom.style.transform =
-        cTransform === 'none' ? aTransform : aTransform.concat(' ', cTransform);
+      if (!this.resetAnimation) {
+        const aTransform = getComputedStyle(animationDom).transform;
+        const cTransform = getComputedStyle(containerDom).transform;
+        containerDom.style.transform =
+          cTransform === 'none' ? aTransform : aTransform.concat(' ', cTransform);
+      } else {
+        this.resetAnimation = false;
+        containerDom.style.transform = 'none';
+      }
       animationDom.classList.remove('playing');
     },
     hideMusicPlayer() {
@@ -194,7 +292,7 @@ export default {
     playMusic() {
       if (this.$refs.player) {
         const player = this.$refs.player;
-        if (player.paused) { 
+        if (player.paused) {
           player.play();
           this.playing = true;
         } else {

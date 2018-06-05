@@ -160,6 +160,7 @@
 
         &__slider {
           flex-grow: 2;
+          position: relative;
 
           & .van-slider__button {
             width: 14px;
@@ -173,12 +174,22 @@
       }
 
       &__buttons {
-        margin-top: 10px;
+        position: relative;
+        margin-top: 5px;
+        display: flex;
+        align-items: center;
+        background-color: transparent;
+
+        &__item {
+          flex-grow: 1;
+          color: #fff;
+          font-size: 30px;
+          min-width: 20%;
+        }
       }
 
       &__play {
         font-size: 60px;
-        color: #fff;
       }
     }
   }
@@ -189,4 +200,16 @@
   animation-duration: 15s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
+}
+
+.music__loading {
+  position: absolute;
+  left: -6.5px;
+  top: -5.5px;
+  width: 13px;
+  height: 13px;
+
+  & .van-loading--black .van-loading__spinner--spinner {
+    color: @primary;
+  }
 }

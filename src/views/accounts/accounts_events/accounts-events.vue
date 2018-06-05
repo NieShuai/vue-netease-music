@@ -10,12 +10,16 @@
         v-for="(event, index) in events"
         :key="index"
         class="accounts__events__content__item">
-        <div class="accounts__events__content__item__child accounts__events__content__item__avatar-container">
+        <div
+          class="accounts__events__content__item__child
+            accounts__events__content__item__avatar-container">
           <div class="accounts__events__content__item__avatar">
             <img :src="user.avatarUrl">
           </div>
         </div>
-        <div class="accounts__events__content__item__child accounts__events__content__item__share">
+        <div
+          class="accounts__events__content__item__child
+            accounts__events__content__item__share">
           <div
             class="accounts__events__content__item__share__item
               accounts__events__content__item__share__item__user">
@@ -83,9 +87,9 @@ export default {
       if (data.code === 200) {
         if (data.events.length > 0) {
           this.user = data.events[0].user;
-          data.events.forEach((element) => {
-            element.parsedJson = JSON.parse(element.json);
-            this.events.push(element);
+          data.events.forEach((eve) => {
+            eve.parsedJson = JSON.parse(eve.json);
+            this.events.push(eve);
           });
         }
         this.showLoading = false;

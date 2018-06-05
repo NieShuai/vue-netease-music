@@ -3,10 +3,16 @@ import * as getters from 'store/getters/music';
 import * as actions from 'store/actions/music';
 
 const state = {
+  // 歌单列表
   myList: [],
-  playingList: [],
+  // 当前播放的歌单index
   playingIndex: 0,
+  // 当前播放的歌单详情
+  playingList: [],
+  // 当前播放的音乐index
   musicIndex: 0,
+  // 0--列表循环播放；1--列表随机播放； 3--单曲循环
+  playingType: 0,
 };
 
 const mutations = {
@@ -15,6 +21,12 @@ const mutations = {
   },
   [types.SET_PLAYING_LIST](state, payload) {
     state.playingList = payload.param;
+  },
+  [types.SET_MUSIC_INDEX](state, payload) {
+    state.musicIndex = payload.param;
+  },
+  [types.SET_PLAYING_TYPE](state, payload) {
+    state.playingType = payload.param;
   },
 };
 
