@@ -3,13 +3,12 @@
     <div class="app__header">
       <head-bar title="标题" show-back @music-player-status="onMusicPlayerStatus"></head-bar>
     </div>
-    <div class="app__content" :class="appContentClasses">
+    <div class="app__content" :class="appStatusClasses">
       <transition name="slide-fade" mode="out-in">
         <router-view></router-view>
       </transition>
     </div>
-    <!-- <app-footer v-show="!musicPlayerStatus"></app-footer> -->
-    <app-footer :class="footerClasses"></app-footer>
+    <app-footer :class="appStatusClasses"></app-footer>
   </div>
 </template>
 
@@ -38,13 +37,7 @@ export default {
     ...mapGetters([
       'uid',
     ]),
-    appContentClasses() {
-      return {
-        'app__content--hidden': this.musicPlayerStatus,
-        'app__content--show': !this.musicPlayerStatus,
-      };
-    },
-    footerClasses() {
+    appStatusClasses() {
       return {
         'app__content--hidden': this.musicPlayerStatus,
         'app__content--show': !this.musicPlayerStatus,
