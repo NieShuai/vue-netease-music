@@ -1,15 +1,20 @@
 <template>
-  <div id="app" v-cloak>
-    <div class="content">
+  <div id="app" class="app" v-cloak>
+    <div class="app__header">
+      <head-bar title="标题" show-back @music-player-status="onMusicPlayerStatus"></head-bar>
+    </div>
+    <div class="app__content" :class="appContentClasses">
       <transition name="slide-fade" mode="out-in">
         <router-view></router-view>
       </transition>
     </div>
-    <app-footer></app-footer>
+    <!-- <app-footer v-show="!musicPlayerStatus"></app-footer> -->
+    <app-footer :class="footerClasses"></app-footer>
   </div>
 </template>
 
 <script>
+import headBar from 'components/head_bar/head-bar';
 import appFooter from 'views/app_footer/app-footer';
 import { mapGetters, mapActions } from 'vuex';
 
@@ -17,31 +22,45 @@ export default {
   name: 'App',
   components: {
     appFooter,
+    headBar,
+  },
+  data() {
+    return {
+      musicPlayerStatus: false,
+    };
+  },
+  watch: {
+    $route(to, from) {
+      console.log(to, from);
+    },
   },
   computed: {
     ...mapGetters([
       'uid',
     ]),
+    appContentClasses() {
+      return {
+        'app__content--hidden': this.musicPlayerStatus,
+        'app__content--show': !this.musicPlayerStatus,
+      };
+    },
+    footerClasses() {
+      return {
+        'app__content--hidden': this.musicPlayerStatus,
+        'app__content--show': !this.musicPlayerStatus,
+      };
+    },
   },
   methods: {
     ...mapActions([
       'setMyList',
     ]),
+    onMusicPlayerStatus(param) {
+      this.musicPlayerStatus = param;
+    },
   },
   mounted() {
     this.setMyList(this.uid);
   },
 };
 </script>
-
-<style lang="less">
-html, body, #app {
-  height: 100%;
-}
-
-.content{
-  height: calc(~"100% - 50px");
-  overflow: hidden;
-  position: relative;
-}
-</style>

@@ -1,6 +1,5 @@
 <template>
   <div class="accounts__events">
-    <head-bar title="动态" show-back></head-bar>
     <div class="accounts__events__content">
       <loading
         v-if="showLoading"
@@ -66,7 +65,6 @@
 </template>
 
 <script>
-import headBar from 'components/head_bar/head-bar';
 import loading from 'components/loading/loading';
 import { mapGetters, mapActions } from 'vuex';
 import { getEvent } from 'api/api';
@@ -126,7 +124,6 @@ export default {
     },
   },
   components: {
-    headBar,
     loading,
   },
 };

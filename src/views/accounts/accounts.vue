@@ -1,6 +1,5 @@
 <template>
   <div class="accounts">
-    <head-bar title="帐号"></head-bar>
     <div class="accounts__content">
       <loading
         v-if="showLoading"
@@ -62,7 +61,6 @@
 </template>
 
 <script>
-import headBar from 'components/head_bar/head-bar';
 import loading from 'components/loading/loading';
 import { mapGetters, mapActions } from 'vuex';
 import { getUserDetail } from 'api/api';
@@ -132,7 +130,6 @@ export default {
     },
   },
   components: {
-    headBar,
     loading,
   },
 };

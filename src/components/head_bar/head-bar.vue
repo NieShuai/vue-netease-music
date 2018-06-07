@@ -4,7 +4,9 @@
       v-if="showBack"
       class="font-awesome-angle-left head-bar__back"
       @click="back"></i>
-    <span class="head-bar__title">{{ title }}</span>
+    <div class="head-bar__title__container">
+      <span class="head-bar__title">{{ title }}</span>
+    </div>
     <i
       class="font-awesome-align-left head-bar__music-player__trigger"
       @click="onShowMusicPlayer"></i>
@@ -42,9 +44,11 @@ export default {
     },
     onShowMusicPlayer() {
       this.musicPlayerStatus = true;
+      this.$emit('music-player-status', true);
     },
     onHideMusicPlayer() {
       this.musicPlayerStatus = false;
+      this.$emit('music-player-status', false);
     },
   },
   components: {

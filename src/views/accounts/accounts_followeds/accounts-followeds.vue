@@ -1,6 +1,5 @@
 <template>
   <div class="accounts__followeds">
-    <head-bar title="粉丝" show-back></head-bar>
     <div class="accounts__followeds__content">
       <loading
         v-if="showLoading"
@@ -16,7 +15,6 @@
 </template>
 
 <script>
-import headBar from 'components/head_bar/head-bar';
 import userItem from 'components/user_item/user-item';
 import loading from 'components/loading/loading';
 import { mapGetters, mapActions } from 'vuex';
@@ -47,7 +45,6 @@ export default {
   },
   methods: {},
   components: {
-    headBar,
     userItem,
     loading,
   },
