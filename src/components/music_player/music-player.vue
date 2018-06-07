@@ -8,14 +8,18 @@
           class="font-awesome-angle-left music-player__back"
           @click="hideMusicPlayer"></i>
         <div class="music-player__header__content">
-          <div class="music-player__header__content__title">{{ title }}</div>
-          <div class="music-player__header__content__artist">{{ artist }}</div>
+          <div class="music-player__header__content__title">
+            {{ title }}
+          </div>
+          <div class="music-player__header__content__artist">
+            {{ artist }}
+          </div>
         </div>
       </div>
       <div class="music-player__content">
         <audio
           v-if="songId"
-          id="player" 
+          id="player"
           ref="player"
           :src="`http://music.163.com/song/media/outer/url?id=${songId}.mp3`"
           hidden
@@ -67,7 +71,10 @@
                 :step="0.1"
                 @touchstart.native="onTouchStart"
                 @touchend.native="onTouchEnd"/>
-              <van-loading v-if="playing && !songLoaded" type="spinner" class="music__loading"/>
+              <van-loading
+                v-if="playing && !songLoaded"
+                type="spinner"
+                class="music__loading"/>
             </div>
             <div
               class="music-player__content__controls__item
@@ -81,16 +88,22 @@
               :class="playingTypeClass"
               @click="changeType"></i>
             <i
-              class="font-awesome-step-backward music-player__content__controls__buttons__item"
+              class="font-awesome-step-backward
+                music-player__content__controls__buttons__item"
               @click="playPre"></i>
             <i
-              class="music-player__content__controls__buttons__item music-player__content__controls__play"
-              :class="playing ? 'font-awesome-pause-circle-o' : 'font-awesome-play-circle-o'"
+              class="music-player__content__controls__buttons__item
+                music-player__content__controls__play"
+              :class="playing ?
+                'font-awesome-pause-circle-o' :
+                'font-awesome-play-circle-o'"
               @click="playMusic"></i>
             <i
-              class="font-awesome-step-forward music-player__content__controls__buttons__item"
+              class="font-awesome-step-forward
+                music-player__content__controls__buttons__item"
               @click="playNext"></i>
-            <i class="font-awesome-list music-player__content__controls__buttons__item"></i>
+            <i class="font-awesome-list
+              music-player__content__controls__buttons__item"></i>
           </div>
         </div>
       </div>

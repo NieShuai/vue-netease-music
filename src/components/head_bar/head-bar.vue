@@ -31,16 +31,20 @@ export default {
       type: Boolean,
       default: false,
     },
+    activeTab: Number,
   },
   data() {
     return {
       musicPlayerStatus: false,
+      showTitle: true,
     };
   },
+  computed: {},
   mounted() {},
   methods: {
     back() {
       this.$router.go(-1);
+      this.$emit('route-back');
     },
     onShowMusicPlayer() {
       this.musicPlayerStatus = true;

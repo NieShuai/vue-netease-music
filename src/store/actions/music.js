@@ -11,7 +11,7 @@ export function setMyList({ commit }, uid) {
         param: list,
       });
       if (list.length > 0) {
-        getListDetail(list[0].id).then((response) => {
+        getListDetail(list[1].id).then((response) => {
           const { data: listData } = response;
           if (listData.code === 200) {
             commit(types.SET_PLAYING_LIST, {

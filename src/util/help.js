@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // 将秒转换成分:秒
 export function formatTime(seconds) {
   return [

@@ -1,14 +1,21 @@
 <template>
   <div id="app" class="app" v-cloak>
     <div class="app__header">
-      <head-bar title="标题" show-back @music-player-status="onMusicPlayerStatus"></head-bar>
+      <head-bar
+        :active-tab="activeTab"
+        :title="title"
+        show-back
+        @music-player-status="onMusicPlayerStatus"
+        @route-back="onRouteBack"></head-bar>
     </div>
     <div class="app__content" :class="appStatusClasses">
       <transition name="slide-fade" mode="out-in">
         <router-view></router-view>
       </transition>
     </div>
-    <app-footer :class="appStatusClasses"></app-footer>
+    <app-footer
+      :class="appStatusClasses"
+      @tab-change="onTabChange"></app-footer>
   </div>
 </template>
 
@@ -16,9 +23,11 @@
 import headBar from 'components/head_bar/head-bar';
 import appFooter from 'views/app_footer/app-footer';
 import { mapGetters, mapActions } from 'vuex';
+import emitter from 'util/emitter';
 
 export default {
   name: 'App',
+  mixins: [emitter],
   components: {
     appFooter,
     headBar,
@@ -26,12 +35,10 @@ export default {
   data() {
     return {
       musicPlayerStatus: false,
+      title: '',
+      activeTab: 0,
+      titleStatus: true,
     };
-  },
-  watch: {
-    $route(to, from) {
-      console.log(to, from);
-    },
   },
   computed: {
     ...mapGetters([
@@ -44,12 +51,54 @@ export default {
       };
     },
   },
+  watch: {
+    $route(to, from) {
+      const noTitle = ['discovery', 'videos', 'friends'];
+      const withTitle = ['mine', 'accounts', 'events', 'follows', 'followeds', 'profile'];
+      if (noTitle.indexOf(to.name) !== -1) {
+        this.titleStatus = false;
+        this.title = '';
+      } else if (withTitle.indexOf(to.name) !== -1) {
+        this.titleStatus = true;
+        const index = withTitle.indexOf(to.name);
+        switch (index) {
+          case 0:
+            this.title = '我的音乐';
+            break;
+          case 1:
+            this.title = '帐号';
+            break;
+          case 2:
+            this.title = '动态';
+            break;
+          case 3:
+            this.title = '关注';
+            break;
+          case 4:
+            this.title = '粉丝';
+            break;
+          case 5:
+            this.title = '我的资料';
+            break;
+          default:
+            this.title = '';
+            break;
+        }
+      }
+    },
+  },
   methods: {
     ...mapActions([
       'setMyList',
     ]),
+    onRouteBack() {
+      this.broadcast('appFooter', 'route-back');
+    },
     onMusicPlayerStatus(param) {
       this.musicPlayerStatus = param;
+    },
+    onTabChange(param) {
+      this.activeTab = param;
     },
   },
   mounted() {

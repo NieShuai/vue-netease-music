@@ -16,8 +16,10 @@
 <script>
 export default {
   name: 'appFooter',
+  componentName: 'appFooter',
   data() {
     return {
+      backClicked: false,
       active: 0,
       columns: [{
         name: '发现',
@@ -45,12 +47,41 @@ export default {
   watch: {
     active: {
       immediate: true,
-      handler(newVal) {
-        const currentTab = this.columns[newVal];
-        this.$router.push(currentTab.router);
+      handler(newVal, oldVal) {
+        if (newVal !== oldVal && !this.backClicked) {
+          const currentTab = this.columns[newVal];
+          this.$emit('tab-change', newVal);
+          this.$router.push(currentTab.router);
+        }
+        this.backClicked = false;
       },
     },
+    $route(to, from) {
+      const preActive = this.active;
+      const { name } = to;
+      if (['discovery'].indexOf(name) !== -1) {
+        this.active = 0;
+      } else if (['videos'].indexOf(name) !== -1) {
+        this.active = 1;
+      } else if (['mine'].indexOf(name) !== -1) {
+        this.active = 2;
+      } else if (['friends'].indexOf(name) !== -1) {
+        this.active = 3;
+      } else if (['accounts', 'events', 'follows', 'followeds', 'profile'].indexOf(name) !== -1) {
+        this.active = 4;
+      }
+      if (preActive === this.active) {
+        this.backClicked = false;
+      }
+    },
   },
-  methods: {},
+  methods: {
+    onRouteBack() {
+      this.backClicked = true;
+    },
+  },
+  created() {
+    this.$on('route-back', this.onRouteBack);
+  },
 };
 </script>
