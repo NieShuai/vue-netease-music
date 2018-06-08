@@ -25,6 +25,7 @@
           hidden
           controls
           @canplaythrough="onCanPlayThrough"
+          @timeupdate="timeUpdated"
           @ended="onEnded">
         </audio>
         <div class="music-player__content__panel">
@@ -123,6 +124,7 @@ const playerResouces = {
 
 export default {
   name: 'musicPlayer',
+  componentName: 'musicPlayer',
   props: {},
   data() {
     return {
@@ -186,18 +188,15 @@ export default {
     },
     musicIndex(newVal) {
       this.progress = 0;
-      this.getMusicDetail(newVal);
+      this._getMusicDetail(newVal);
       this.songLoaded = false;
       this.$nextTick(() => {
         this.playMusic();
       });
     },
-  },
-  mounted() {
-    this.getMusicDetail(this.musicIndex);
-    this.$nextTick(() => {
-      this.$refs.player.ontimeupdate = this.timeUpdated;
-    });
+    playingList(newVal) {
+      this._getMusicDetail(this.musicIndex);
+    },
   },
   methods: {
     ...mapActions([
@@ -211,7 +210,7 @@ export default {
       }
       this.setPlayingType(newType);
     },
-    getMusicDetail(mIndex) {
+    _getMusicDetail(mIndex) {
       if (this.playingList.length > 0) {
         this.songId = this.playingList[mIndex].id;
         getMusicDetail(this.songId).then((res) => {
