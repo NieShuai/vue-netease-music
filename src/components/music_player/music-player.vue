@@ -5,7 +5,7 @@
     <div class="music-player__inner">
       <div class="music-player__header">
         <i
-          class="font-awesome-angle-left music-player__back"
+          class="iconfont icon-back music-player__back"
           @click="hideMusicPlayer"></i>
         <div class="music-player__header__content">
           <div class="music-player__header__content__title">
@@ -49,10 +49,10 @@
               </div>
             </div>
             <div class="music-player__content__panel__mask__buttons">
-              <i class="font-awesome-heart-o"></i>
-              <i class="font-awesome-download"></i>
-              <i class="font-awesome-commenting-o"></i>
-              <i class="font-awesome-ellipsis-v"></i>
+              <i class="iconfont icon-heart"></i>
+              <i class="iconfont icon-download"></i>
+              <i class="iconfont icon-comment"></i>
+              <i class="iconfont icon-dot-v"></i>
             </div>
           </div>
           <div class="music-player__content__panel__lyric"></div>
@@ -85,25 +85,25 @@
           </div>
           <div class="music-player__content__controls__buttons">
             <i
-              class="music-player__content__controls__buttons__item"
+              class="music-player__content__controls__buttons__item iconfont"
               :class="playingTypeClass"
               @click="changeType"></i>
             <i
-              class="font-awesome-step-backward
+              class="iconfont icon-play-pre
                 music-player__content__controls__buttons__item"
               @click="playPre"></i>
             <i
               class="music-player__content__controls__buttons__item
-                music-player__content__controls__play"
+                music-player__content__controls__play iconfont"
               :class="playing ?
-                'font-awesome-pause-circle-o' :
-                'font-awesome-play-circle-o'"
+                'icon-music-pause' :
+                'icon-music-play'"
               @click="playMusic"></i>
             <i
-              class="font-awesome-step-forward
+              class="iconfont icon-play-next
                 music-player__content__controls__buttons__item"
               @click="playNext"></i>
-            <i class="font-awesome-list
+            <i class="iconfont icon-list
               music-player__content__controls__buttons__item"></i>
           </div>
         </div>
@@ -150,11 +150,11 @@ export default {
     ]),
     playingTypeClass() {
       if (this.playingType === 1) {
-        return 'font-awesome-random';
+        return 'icon-random';
       } else if (this.playingType === 2) {
-        return 'font-awesome-rotate-left';
+        return 'icon-single-loop';
       }
-      return 'font-awesome-retweet';
+      return 'icon-loop';
     },
     musicPlayerStyle() {
       return {

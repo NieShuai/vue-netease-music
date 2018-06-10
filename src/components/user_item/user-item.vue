@@ -8,7 +8,7 @@
         <div :class="nickNameClass">
           <span>
             {{ userObject.nickname }}
-            <i :class="userObject.gender === 1 ? 'font-awesome-mars' : 'font-awesome-venus'"></i>
+            <i class="iconfont" :class="userObject.gender === 1 ? 'icon-male' : 'icon-female'"></i>
           </span>
         </div>
         <div
@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="user__item__detail__more">
-        <i class="font-awesome-ellipsis-h"></i>
+        <i class="iconfont icon-dot-h"></i>
       </div>
     </div>
   </div>

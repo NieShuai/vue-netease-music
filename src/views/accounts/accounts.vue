@@ -33,7 +33,7 @@
             @click="toDetailPage(item)">
             <div
               v-if="item.isIcon"
-              class="accounts__content__card__detail__item__up
+              class="iconfont accounts__content__card__detail__item__up
                 accounts__content__card__detail__item__up__is-icon">
               <i :class="item.key"></i>
             </div>
@@ -88,7 +88,7 @@ export default {
         router: '/followeds',
       }, {
         isIcon: true,
-        key: 'font-awesome-pencil',
+        key: 'icon-pencil',
         value: '我的资料',
         router: '/profile',
       }],

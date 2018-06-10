@@ -6,7 +6,7 @@
         :key="index">
         <span>{{ column.name }}</span>
         <template slot="icon" slot-scope="props">
-          <i :class="`font-awesome-${column.iconClass}`"/>
+          <i :class="column.iconClass"/>
         </template>
       </van-tabbar-item>
     </van-tabbar>
@@ -23,23 +23,23 @@ export default {
       active: 0,
       columns: [{
         name: '发现',
-        iconClass: 'paper-plane',
+        iconClass: 'iconfont icon-netease',
         router: '/discovery',
       }, {
         name: '视频',
-        iconClass: 'youtube-play',
+        iconClass: 'iconfont icon-video',
         router: '/videos',
       }, {
         name: '我的',
-        iconClass: 'music',
+        iconClass: 'iconfont icon-music',
         router: '/mine',
       }, {
         name: '朋友',
-        iconClass: 'users',
+        iconClass: 'iconfont icon-user-group',
         router: '/friends',
       }, {
         name: '帐号',
-        iconClass: 'user',
+        iconClass: 'iconfont icon-user',
         router: '/accounts',
       }],
     };
