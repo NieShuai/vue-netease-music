@@ -15,6 +15,9 @@
             {{ artist }}
           </div>
         </div>
+        <i
+          class="icon-share music-player__share"
+          @click="hideMusicPlayer"></i>
       </div>
       <div class="music-player__content">
         <audio
@@ -115,7 +118,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { getMusicDetail } from 'api/api';
-import { formatTime } from 'util/help';
+import { formatTime, getRandom } from 'util/help';
 
 const playerResouces = {
   disk: require('../../assets/player/player_disc.png'),
@@ -147,6 +150,7 @@ export default {
       'playingList',
       'musicIndex',
       'playingType',
+      'songObj',
     ]),
     playingTypeClass() {
       if (this.playingType === 1) {
@@ -168,12 +172,32 @@ export default {
     },
   },
   watch: {
-    coverUrl(newVal) {
-      document.styleSheets[0].addRule(
-        '.music-player__inner::before',
-        `background-image: url(${newVal})`);
-      // document.styleSheets[0].insertRule('.red::before { color: green }', 0);
+    songObj: {
+      immediate: true,
+      handler(newVal) {
+        const {
+          artist,
+          coverUrl,
+          songId,
+          time,
+          title,
+        } = newVal;
+        this.artist = artist;
+        this.coverUrl = coverUrl;
+        this.songId = songId;
+        this.time = time;
+        this.title = title;
+        document.styleSheets[0].addRule(
+          '.music-player__inner::before',
+          `background-image: url(${coverUrl})`);
+      },
     },
+    // coverUrl(newVal) {
+    //   document.styleSheets[0].addRule(
+    //     '.music-player__inner::before',
+    //     `background-image: url(${newVal})`);
+    //   // document.styleSheets[0].insertRule('.red::before { color: green }', 0);
+    // },
     playing(newVal) {
       if (newVal && this.songLoaded) {
         this.runAnimation();
@@ -190,18 +214,16 @@ export default {
       this.progress = 0;
       this.getMusicDetails(newVal);
       this.songLoaded = false;
-      this.$nextTick(() => {
-        this.playMusic();
-      });
     },
-    playingList(newVal) {
-      this.getMusicDetails(this.musicIndex);
-    },
+    // playingList(newVal) {
+    //   this.getMusicDetails(this.musicIndex);
+    // },
   },
   methods: {
     ...mapActions([
       'setMusicIndex',
       'setPlayingType',
+      'setPlayingSong',
     ]),
     changeType() {
       let newType = this.playingType + 1;
@@ -209,48 +231,87 @@ export default {
         newType = 0;
       }
       this.setPlayingType(newType);
+      let msg = '';
+      if (newType === 0) {
+        msg = '列表循环';
+      } else if (newType === 1) {
+        msg = '随机播放';
+      } else {
+        msg = '单曲循环';
+      }
+      this.$toast({
+        message: msg,
+        duration: 1500,
+      });
     },
     getMusicDetails(mIndex) {
       if (this.playingList.length > 0) {
-        this.songId = this.playingList[mIndex].id;
-        getMusicDetail(this.songId).then((res) => {
+        const songid = this.playingList[mIndex].id;
+        getMusicDetail(songid).then((res) => {
           const { data } = res;
           if (data.code === 200) {
             const songObj = data.songs[0];
-            this.coverUrl = songObj.al.picUrl;
-            this.title = songObj.name;
-            this.artist = songObj.ar[0].name;
-            this.time = songObj.dt;
+            const obj = {};
+            obj.songId = songid;
+            obj.coverUrl = songObj.al.picUrl;
+            obj.title = songObj.name;
+            obj.artist = songObj.ar[0].name;
+            obj.time = songObj.dt;
+            this.setPlayingSong(obj);
+            if (songObj.copyright !== 0) {
+              this.$nextTick(() => {
+                this.playMusic();
+              });
+            } else {
+              this.$toast('没有获取到资源...');
+            }
           }
         });
       }
     },
     onEnded() {
-      this.playNext();
+      if (this.playingType === 2) {
+        this.playProgress = '00:00';
+        this.resetAnimation = true;
+        const player = this.$refs.player;
+        player.pause();
+        this.playing = false;
+        player.currentTime = 0;
+        player.play();
+        this.playing = true;
+      } else {
+        this.playNext();
+      }
     },
     playNext() {
+      this.playProgress = '00:00';
       this.resetAnimation = true;
       this.$refs.player.pause();
       this.playing = false;
       let newPlayingIndex = 0;
-      if (this.playingType === 0) {
+      if (this.playingType === 0 || this.playingType === 2) {
         newPlayingIndex = this.musicIndex + 1;
         if (newPlayingIndex > this.playingList.length - 1) {
           newPlayingIndex = 0;
         }
+      } else {
+        newPlayingIndex = getRandom(0, this.playingList.length - 1);
       }
       this.setMusicIndex(newPlayingIndex);
     },
     playPre() {
+      this.playProgress = '00:00';
       this.resetAnimation = true;
       this.$refs.player.pause();
       this.playing = false;
       let newPlayingIndex = 0;
-      if (this.playingType === 0) {
+      if (this.playingType === 0 || this.playingType === 2) {
         newPlayingIndex = this.musicIndex - 1;
         if (newPlayingIndex < 0) {
           newPlayingIndex = this.playingList.length - 1;
         }
+      } else {
+        newPlayingIndex = getRandom(0, this.playingList.length - 1);
       }
       this.setMusicIndex(newPlayingIndex);
     },
@@ -316,4 +377,3 @@ export default {
   },
 };
 </script>
-

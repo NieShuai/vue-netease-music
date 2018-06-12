@@ -11,8 +11,10 @@ const state = {
   playingList: [],
   // 当前播放的音乐index
   musicIndex: 0,
-  // 0--列表循环播放；1--列表随机播放； 3--单曲循环
+  // 0--列表循环播放；1--列表随机播放； 2--单曲循环
   playingType: 0,
+  // 当前播放的音乐信息
+  songObj: {},
 };
 
 const mutations = {
@@ -27,6 +29,9 @@ const mutations = {
   },
   [types.SET_PLAYING_TYPE](state, payload) {
     state.playingType = payload.param;
+  },
+  [types.SET_PLAYING_SONG](state, payload) {
+    state.songObj = payload.param;
   },
 };
 

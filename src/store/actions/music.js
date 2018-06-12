@@ -1,5 +1,5 @@
 import * as types from 'store/mutation-types';
-import { getPlayList, getListDetail } from 'api/api';
+import { getPlayList, getListDetail, getMusicDetail } from 'api/api';
 
 export function setMyList({ commit }, uid) {
   getPlayList(uid).then((res) => {
@@ -17,6 +17,24 @@ export function setMyList({ commit }, uid) {
             commit(types.SET_PLAYING_LIST, {
               param: listData.playlist.trackIds,
             });
+            if (listData.playlist.trackIds.length > 0) {
+              const songid = listData.playlist.trackIds[0].id;
+              getMusicDetail(songid).then((res) => {
+                const { data } = res;
+                if (data.code === 200) {
+                  const songObj = data.songs[0];
+                  const obj = {};
+                  obj.songId = songid;
+                  obj.coverUrl = songObj.al.picUrl;
+                  obj.title = songObj.name;
+                  obj.artist = songObj.ar[0].name;
+                  obj.time = songObj.dt;
+                  commit(types.SET_PLAYING_SONG, {
+                    param: obj,
+                  });
+                }
+              });
+            }
           }
         });
       }
@@ -30,4 +48,8 @@ export function setMusicIndex({ commit }, param) {
 
 export function setPlayingType({ commit }, param) {
   commit(types.SET_PLAYING_TYPE, { param });
+}
+
+export function setPlayingSong({ commit }, param) {
+  commit(types.SET_PLAYING_SONG, { param });
 }
