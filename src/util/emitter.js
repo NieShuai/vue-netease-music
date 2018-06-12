@@ -1,3 +1,4 @@
+/* eslint-disable */
 function broadcast(componentName, eventName, params) {
   this.$children.forEach(child => {
     const name = child.$options.componentName;
@@ -29,6 +30,6 @@ export default {
     },
     broadcast(componentName, eventName, params) {
       broadcast.call(this, componentName, eventName, params);
-    }
-  }
+    },
+  },
 };

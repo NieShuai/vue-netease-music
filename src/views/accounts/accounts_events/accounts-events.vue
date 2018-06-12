@@ -86,8 +86,9 @@ export default {
         if (data.events.length > 0) {
           this.user = data.events[0].user;
           data.events.forEach((eve) => {
-            eve.parsedJson = JSON.parse(eve.json);
-            this.events.push(eve);
+            const tmp = eve;
+            tmp.parsedJson = JSON.parse(eve.json);
+            this.events.push(tmp);
           });
         }
         this.showLoading = false;
@@ -117,10 +118,10 @@ export default {
     },
     formatTime(time) {
       const da = new Date(time);
-      const year = da.getFullYear() + '年';
-      const month = da.getMonth() + 1 + '月';
-      const date = da.getDate() + '日';
-      return year + month + date;
+      const year = ''.concat(da.getFullYear(), '年');
+      const month = ''.concat(da.getMonth(), '月');
+      const date = ''.concat(da.getDate(), '日');
+      return year.concat(month, date);
     },
   },
   components: {

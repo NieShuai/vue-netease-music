@@ -27,6 +27,9 @@ module.exports = {
   rules: {
     'no-console': 0,
     'no-unused-vars': 0,
+    'no-shadow': 0,
+    'quote-props': 0,
+    'global-require': 0,
     // don't require .vue extension when importing
     'import/extensions': ['error', 'always', {
       js: 'never',

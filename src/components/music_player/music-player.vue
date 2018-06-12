@@ -188,14 +188,14 @@ export default {
     },
     musicIndex(newVal) {
       this.progress = 0;
-      this._getMusicDetail(newVal);
+      this.getMusicDetails(newVal);
       this.songLoaded = false;
       this.$nextTick(() => {
         this.playMusic();
       });
     },
     playingList(newVal) {
-      this._getMusicDetail(this.musicIndex);
+      this.getMusicDetails(this.musicIndex);
     },
   },
   methods: {
@@ -210,7 +210,7 @@ export default {
       }
       this.setPlayingType(newType);
     },
-    _getMusicDetail(mIndex) {
+    getMusicDetails(mIndex) {
       if (this.playingList.length > 0) {
         this.songId = this.playingList[mIndex].id;
         getMusicDetail(this.songId).then((res) => {
@@ -261,7 +261,7 @@ export default {
       const curTime = this.$refs.player.currentTime;
       this.playProgress = formatTime(curTime);
       if (!this.isChangingProgress) {
-        this.progress = (curTime * 1000) / this.time * 100;
+        this.progress = ((curTime * 1000) / this.time) * 100;
       }
     },
     onTouchStart() {
