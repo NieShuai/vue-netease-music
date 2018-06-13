@@ -4,7 +4,7 @@
       <head-bar
         :active-tab="activeTab"
         :title="title"
-        show-back
+        :show-back="showBack"
         @music-player-status="onMusicPlayerStatus"
         @route-back="onRouteBack"></head-bar>
     </div>
@@ -38,6 +38,7 @@ export default {
       title: '',
       activeTab: 0,
       titleStatus: true,
+      showBack: false,
     };
   },
   computed: {
@@ -57,6 +58,7 @@ export default {
       const withTitle = ['mine', 'accounts', 'events', 'follows', 'followeds', 'profile'];
       if (noTitle.indexOf(to.name) !== -1) {
         this.titleStatus = false;
+        this.showBack = false;
         this.title = '';
       } else if (withTitle.indexOf(to.name) !== -1) {
         this.titleStatus = true;
@@ -64,24 +66,31 @@ export default {
         switch (index) {
           case 0:
             this.title = '我的音乐';
+            this.showBack = false;
             break;
           case 1:
             this.title = '帐号';
+            this.showBack = false;
             break;
           case 2:
             this.title = '动态';
+            this.showBack = true;
             break;
           case 3:
             this.title = '关注';
+            this.showBack = true;
             break;
           case 4:
             this.title = '粉丝';
+            this.showBack = true;
             break;
           case 5:
             this.title = '我的资料';
+            this.showBack = true;
             break;
           default:
             this.title = '';
+            this.showBack = false;
             break;
         }
       }

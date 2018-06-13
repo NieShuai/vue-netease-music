@@ -46,16 +46,16 @@
             class="accounts__events__content__item__share__item
               accounts__events__content__item__share__item__buttons">
             <div class="accounts__events__content__item__share__item__buttons__item">
-              <i class="iconfont icon-good"></i> 赞
+              <i class="icon-good"></i> 赞
             </div>
             <div class="accounts__events__content__item__share__item__buttons__item">
-              <i class="iconfont icon-comment"></i> 评论
+              <i class="icon-comment"></i> 评论
             </div>
             <div class="accounts__events__content__item__share__item__buttons__item">
-              <i class="iconfont icon-share"></i> 分享
+              <i class="icon-share"></i> 分享
             </div>
             <div class="accounts__events__content__item__share__item__buttons__item">
-              <i class="iconfont icon-dot-h"></i>
+              <i class="icon-dot-h"></i>
             </div>
           </div>
         </div>
@@ -119,7 +119,7 @@ export default {
     formatTime(time) {
       const da = new Date(time);
       const year = ''.concat(da.getFullYear(), '年');
-      const month = ''.concat(da.getMonth(), '月');
+      const month = ''.concat(da.getMonth() + 1, '月');
       const date = ''.concat(da.getDate(), '日');
       return year.concat(month, date);
     },

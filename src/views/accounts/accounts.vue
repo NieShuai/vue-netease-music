@@ -33,7 +33,7 @@
             @click="toDetailPage(item)">
             <div
               v-if="item.isIcon"
-              class="iconfont accounts__content__card__detail__item__up
+              class="accounts__content__card__detail__item__up
                 accounts__content__card__detail__item__up__is-icon">
               <i :class="item.key"></i>
             </div>

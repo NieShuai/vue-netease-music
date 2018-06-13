@@ -5,7 +5,7 @@
     <div class="music-player__inner">
       <div class="music-player__header">
         <i
-          class="iconfont icon-back music-player__back"
+          class="icon-back music-player__back"
           @click="hideMusicPlayer"></i>
         <div class="music-player__header__content">
           <div class="music-player__header__content__title">
@@ -29,7 +29,8 @@
           controls
           @canplaythrough="onCanPlayThrough"
           @timeupdate="timeUpdated"
-          @ended="onEnded">
+          @ended="onEnded"
+          @error="onError">
         </audio>
         <div class="music-player__content__panel">
           <div class="music-player__content__panel__mask">
@@ -52,10 +53,10 @@
               </div>
             </div>
             <div class="music-player__content__panel__mask__buttons">
-              <i class="iconfont icon-heart"></i>
-              <i class="iconfont icon-download"></i>
-              <i class="iconfont icon-comment"></i>
-              <i class="iconfont icon-dot-v"></i>
+              <i class="icon-heart"></i>
+              <i class="icon-download"></i>
+              <i class="icon-comment"></i>
+              <i class="icon-dot-v"></i>
             </div>
           </div>
           <div class="music-player__content__panel__lyric"></div>
@@ -88,30 +89,61 @@
           </div>
           <div class="music-player__content__controls__buttons">
             <i
-              class="music-player__content__controls__buttons__item iconfont"
+              class="music-player__content__controls__buttons__item"
               :class="playingTypeClass"
               @click="changeType"></i>
             <i
-              class="iconfont icon-play-pre
+              class="icon-play-pre
                 music-player__content__controls__buttons__item"
               @click="playPre"></i>
             <i
               class="music-player__content__controls__buttons__item
-                music-player__content__controls__play iconfont"
+                music-player__content__controls__play"
               :class="playing ?
                 'icon-music-pause' :
                 'icon-music-play'"
               @click="playMusic"></i>
             <i
-              class="iconfont icon-play-next
+              class="icon-play-next
                 music-player__content__controls__buttons__item"
               @click="playNext"></i>
-            <i class="iconfont icon-list
-              music-player__content__controls__buttons__item"></i>
+            <i class="icon-list
+              music-player__content__controls__buttons__item"
+              @click="showListModal"></i>
           </div>
         </div>
       </div>
     </div>
+    <van-popup v-model="listModalStatus" position="bottom" class="list__modal">
+      <div class="list__modal__header">
+        <i
+          class="list__modal__header__play-type"
+          :class="playingTypeClass"
+          @click="changeType(true)"></i>
+        <span class="list__modal__header__play-type__text">
+          {{ typeText }}
+        </span>
+      </div>
+      <div class="list__modal__content">
+        <ul>
+          <li
+            v-for="(item, index) in playingList"
+            :key="index"
+            :class="{
+              'list__modal__content__song': 1,
+              'list__modal__content__song--playing': index === musicIndex,
+            }"
+            @click="setMusicIndex(index)">
+            <i
+              v-if="index === musicIndex"
+              class="icon-volume-on list__modal__content__song__voice"></i>
+            <span class="list__modal__content__song__name">{{ item.name }}</span>
+            <span class="list__modal__content__song__artist"> - {{ item.ar[0].name }}</span>
+          </li>
+        </ul>
+      </div>
+      <div class="list__modal__footer" @click="listModalStatus = false">关闭</div>
+    </van-popup>
   </div>
 </template>
 
@@ -143,6 +175,7 @@ export default {
       isChangingProgress: false,
       songLoaded: false,
       resetAnimation: false,
+      listModalStatus: false,
     };
   },
   computed: {
@@ -152,6 +185,14 @@ export default {
       'playingType',
       'songObj',
     ]),
+    typeText() {
+      if (this.playingType === 1) {
+        return `随机播放(${this.playingList.length})`;
+      } else if (this.playingType === 2) {
+        return '单曲循环';
+      }
+      return `列表循环(${this.playingList.length})`;
+    },
     playingTypeClass() {
       if (this.playingType === 1) {
         return 'icon-random';
@@ -192,12 +233,6 @@ export default {
           `background-image: url(${coverUrl})`);
       },
     },
-    // coverUrl(newVal) {
-    //   document.styleSheets[0].addRule(
-    //     '.music-player__inner::before',
-    //     `background-image: url(${newVal})`);
-    //   // document.styleSheets[0].insertRule('.red::before { color: green }', 0);
-    // },
     playing(newVal) {
       if (newVal && this.songLoaded) {
         this.runAnimation();
@@ -215,9 +250,6 @@ export default {
       this.getMusicDetails(newVal);
       this.songLoaded = false;
     },
-    // playingList(newVal) {
-    //   this.getMusicDetails(this.musicIndex);
-    // },
   },
   methods: {
     ...mapActions([
@@ -225,7 +257,13 @@ export default {
       'setPlayingType',
       'setPlayingSong',
     ]),
-    changeType() {
+    // setNewPlaying(index) {
+    //   this.setMusicIndex(newPlayingIndex);
+    // },
+    showListModal() {
+      this.listModalStatus = true;
+    },
+    changeType(disableToast = false) {
       let newType = this.playingType + 1;
       if (newType === 3) {
         newType = 0;
@@ -239,33 +277,25 @@ export default {
       } else {
         msg = '单曲循环';
       }
-      this.$toast({
-        message: msg,
-        duration: 1500,
-      });
+      if (!disableToast) {
+        this.$toast({
+          message: msg,
+          duration: 1000,
+        });
+      }
     },
     getMusicDetails(mIndex) {
       if (this.playingList.length > 0) {
-        const songid = this.playingList[mIndex].id;
-        getMusicDetail(songid).then((res) => {
-          const { data } = res;
-          if (data.code === 200) {
-            const songObj = data.songs[0];
-            const obj = {};
-            obj.songId = songid;
-            obj.coverUrl = songObj.al.picUrl;
-            obj.title = songObj.name;
-            obj.artist = songObj.ar[0].name;
-            obj.time = songObj.dt;
-            this.setPlayingSong(obj);
-            if (songObj.copyright !== 0) {
-              this.$nextTick(() => {
-                this.playMusic();
-              });
-            } else {
-              this.$toast('没有获取到资源...');
-            }
-          }
+        const playingObj = this.playingList[mIndex];
+        const obj = {};
+        obj.songId = playingObj.id;
+        obj.coverUrl = playingObj.al.picUrl;
+        obj.title = playingObj.name;
+        obj.artist = playingObj.ar[0].name;
+        obj.time = playingObj.dt;
+        this.setPlayingSong(obj);
+        this.$nextTick(() => {
+          this.playMusic();
         });
       }
     },
@@ -282,6 +312,15 @@ export default {
       } else {
         this.playNext();
       }
+    },
+    onError() {
+      this.$toast('资源加载错误...');
+      const player = this.$refs.player;
+      player.pause();
+      this.playing = false;
+      setTimeout(() => {
+        this.playNext();
+      }, 3000);
     },
     playNext() {
       this.playProgress = '00:00';

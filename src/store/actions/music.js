@@ -15,24 +15,18 @@ export function setMyList({ commit }, uid) {
           const { data: listData } = response;
           if (listData.code === 200) {
             commit(types.SET_PLAYING_LIST, {
-              param: listData.playlist.trackIds,
+              param: listData.playlist.tracks,
             });
-            if (listData.playlist.trackIds.length > 0) {
-              const songid = listData.playlist.trackIds[0].id;
-              getMusicDetail(songid).then((res) => {
-                const { data } = res;
-                if (data.code === 200) {
-                  const songObj = data.songs[0];
-                  const obj = {};
-                  obj.songId = songid;
-                  obj.coverUrl = songObj.al.picUrl;
-                  obj.title = songObj.name;
-                  obj.artist = songObj.ar[0].name;
-                  obj.time = songObj.dt;
-                  commit(types.SET_PLAYING_SONG, {
-                    param: obj,
-                  });
-                }
+            if (listData.playlist.tracks.length > 0) {
+              const defaultSongObj = listData.playlist.tracks[0];
+              const obj = {};
+              obj.songId = defaultSongObj.id;
+              obj.coverUrl = defaultSongObj.al.picUrl;
+              obj.title = defaultSongObj.name;
+              obj.artist = defaultSongObj.ar[0].name;
+              obj.time = defaultSongObj.dt;
+              commit(types.SET_PLAYING_SONG, {
+                param: obj,
               });
             }
           }

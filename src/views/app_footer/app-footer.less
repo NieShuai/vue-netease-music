@@ -1,15 +1,17 @@
 .app-footer {
   height: 50px;
 
-  & i {
-    font-weight: bold;
-  }
-
   & .icon-netease {
-    font-weight: normal;
+    -webkit-text-stroke: 1px #ffffff;
   }
 
-  & .van-tabbar-item--active {
-    color: @primary;
+  & .van-tabbar-item {
+    &__icon {
+      font-size: 25px;
+    }
+
+    &--active {
+      color: @primary;
+    }
   }
 }

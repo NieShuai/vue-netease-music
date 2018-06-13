@@ -2,13 +2,13 @@
   <div class="head-bar">
     <i
       v-if="showBack"
-      class="iconfont icon-back head-bar__back"
+      class="icon-back head-bar__back"
       @click="back"></i>
     <div class="head-bar__title__container">
       <span class="head-bar__title">{{ title }}</span>
     </div>
     <i
-      class="iconfont icon-player-status head-bar__music-player__trigger"
+      class="icon-player-status head-bar__music-player__trigger"
       @click="onShowMusicPlayer"></i>
     <van-popup
       class="music-player__pop"

@@ -23,23 +23,23 @@ export default {
       active: 0,
       columns: [{
         name: '发现',
-        iconClass: 'iconfont icon-netease',
+        iconClass: 'icon-netease',
         router: '/discovery',
       }, {
         name: '视频',
-        iconClass: 'iconfont icon-video',
+        iconClass: 'icon-video',
         router: '/videos',
       }, {
         name: '我的',
-        iconClass: 'iconfont icon-music',
+        iconClass: 'icon-music',
         router: '/mine',
       }, {
         name: '朋友',
-        iconClass: 'iconfont icon-user-group',
+        iconClass: 'icon-user-group',
         router: '/friends',
       }, {
         name: '帐号',
-        iconClass: 'iconfont icon-user',
+        iconClass: 'icon-user',
         router: '/accounts',
       }],
     };
