@@ -1,6 +1,6 @@
 # vue-netease-music
 
-> project for fun
+> project for fun...
 
 ## Build Setup
 
