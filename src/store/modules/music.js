@@ -33,6 +33,9 @@ const mutations = {
   [types.SET_PLAYING_SONG](state, payload) {
     state.songObj = payload.param;
   },
+  [types.SET_PLAYING_INDEX](state, payload) {
+    state.playingIndex = payload.param;
+  },
 };
 
 export default {

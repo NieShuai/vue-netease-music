@@ -8,7 +8,7 @@
         v-for="(list, index) in myList"
         :key="index"
         :right-width="70">
-        <div class="mine__content__item">
+        <div class="mine__content__item" @click="showMusicList">
           <div class="mine__content__item__cover">
             <img :src="list.coverImgUrl" >
           </div>
@@ -18,6 +18,9 @@
             </div>
             <div class="mine__content__item__infor__counts">{{ list.trackCount }}首</div>
           </div>
+          <i
+            v-if="index === playingIndex"
+            class="icon-volume-on mine__content__item__playing-list"></i>
         </div>
         <span slot="right">删除</span>
       </van-cell-swipe>
@@ -33,9 +36,15 @@ export default {
   computed: {
     ...mapGetters([
       'myList',
+      'playingIndex',
     ]),
     listSize() {
       return this.myList.length;
+    },
+  },
+  methods: {
+    showMusicList() {
+      this.$router.push('/list');
     },
   },
   components: {},

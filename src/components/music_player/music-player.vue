@@ -124,7 +124,7 @@
           {{ typeText }}
         </span>
       </div>
-      <div class="list__modal__content">
+      <div class="list__modal__content" ref="listwrapper">
         <ul>
           <li
             v-for="(item, index) in playingList"
@@ -176,6 +176,7 @@ export default {
       songLoaded: false,
       resetAnimation: false,
       listModalStatus: false,
+      listModalScroll: null,
     };
   },
   computed: {
@@ -247,8 +248,9 @@ export default {
     },
     musicIndex(newVal) {
       this.progress = 0;
-      this.getMusicDetails(newVal);
       this.songLoaded = false;
+      this.playing = false;
+      this.getMusicDetails(newVal);
     },
   },
   methods: {
@@ -257,9 +259,6 @@ export default {
       'setPlayingType',
       'setPlayingSong',
     ]),
-    // setNewPlaying(index) {
-    //   this.setMusicIndex(newPlayingIndex);
-    // },
     showListModal() {
       this.listModalStatus = true;
     },

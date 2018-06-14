@@ -9,6 +9,7 @@ import accountsEvents from 'views/accounts/accounts_events/accounts-events';
 import accountsFollows from 'views/accounts/accounts_follows/accounts-follows';
 import accountsFolloweds from 'views/accounts/accounts_followeds/accounts-followeds';
 import accountsProfile from 'views/accounts/accounts_profile/accounts-profile';
+import musicList from 'views/music_list/music-list';
 
 Vue.use(Router);
 
@@ -49,6 +50,10 @@ const router = new Router({
     path: '/profile',
     name: 'profile',
     component: accountsProfile,
+  }, {
+    path: '/list',
+    name: 'list',
+    component: musicList,
   }],
 });
 

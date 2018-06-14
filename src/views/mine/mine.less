@@ -34,13 +34,21 @@
         clear: both;
       }
 
+      &__playing-list {
+        position: absolute;
+        right: 10px;
+        font-size: 20px;
+        line-height: 70px;
+        color: @primary;
+      }
+
       &__cover {
         padding: 5px;
         float: left;
         margin-right: 5px;
 
         & img {
-          border-radius: 3px;
+          border-radius: 5px;
           width: 60px;
           height: 60px;
         }
@@ -50,7 +58,7 @@
         height: 100%;
         width: calc(~"100% - 75px");
         box-sizing: border-box;
-        border-bottom: 1px solid #dcdcdc;
+        border-bottom: 1px solid rgba(192, 192, 192, 0.2);
         float: left;
         position: relative;
 
