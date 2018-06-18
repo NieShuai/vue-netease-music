@@ -91,7 +91,7 @@
             <i
               class="music-player__content__controls__buttons__item"
               :class="playingTypeClass"
-              @click="changeType"></i>
+              @click="changeType(false)"></i>
             <i
               class="icon-play-pre
                 music-player__content__controls__buttons__item"
@@ -114,7 +114,7 @@
         </div>
       </div>
     </div>
-    <van-popup v-model="listModalStatus" position="bottom" class="list__modal">
+    <!-- <van-popup v-model="listModalStatus" position="bottom" class="list__modal">
       <div class="list__modal__header">
         <i
           class="list__modal__header__play-type"
@@ -124,8 +124,8 @@
           {{ typeText }}
         </span>
       </div>
-      <div class="list__modal__content" ref="listwrapper">
-        <ul>
+      <div class="list__modal__content">
+        <ul class="list-content">
           <li
             v-for="(item, index) in playingList"
             :key="index"
@@ -143,11 +143,42 @@
         </ul>
       </div>
       <div class="list__modal__footer" @click="listModalStatus = false">关闭</div>
-    </van-popup>
+    </van-popup> -->
+    <div class="list__modal">
+      <div class="list__modal__header">
+        <i
+          class="list__modal__header__play-type"
+          :class="playingTypeClass"
+          @click="changeType(true)"></i>
+        <span class="list__modal__header__play-type__text">
+          {{ typeText }}
+        </span>
+      </div>
+      <div class="list__modal__content" ref="wrapper">
+        <ul class="list-content">
+          <li
+            v-for="(item, index) in playingList"
+            :key="index"
+            :class="{
+              'list__modal__content__song': 1,
+              'list__modal__content__song--playing': index === musicIndex,
+            }"
+            @click="setMusicIndex(index)">
+            <i
+              v-if="index === musicIndex"
+              class="icon-volume-on list__modal__content__song__voice"></i>
+            <span class="list__modal__content__song__name">{{ item.name }}</span>
+            <span class="list__modal__content__song__artist"> - {{ item.ar[0].name }}</span>
+          </li>
+        </ul>
+      </div>
+      <div class="list__modal__footer" @click="listModalStatus = false">关闭</div>
+    </div>
   </div>
 </template>
 
 <script>
+import BScroll from 'better-scroll';
 import { mapGetters, mapActions } from 'vuex';
 import { getMusicDetail } from 'api/api';
 import { formatTime, getRandom } from 'util/help';
@@ -214,6 +245,17 @@ export default {
     },
   },
   watch: {
+    listModalStatus(newVal) {
+      if (newVal) {
+        this.$nextTick(() => {
+          this.listModalScroll = new BScroll(this.$refs.wrapper);
+          this.listModalScroll.refresh();
+        });
+      } else {
+        this.listModalScroll.destroy();
+        this.listModalScroll = null;
+      }
+    },
     songObj: {
       immediate: true,
       handler(newVal) {
@@ -252,6 +294,12 @@ export default {
       this.playing = false;
       this.getMusicDetails(newVal);
     },
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.listModalScroll = new BScroll(this.$refs.wrapper);
+      this.listModalScroll.refresh();
+    });
   },
   methods: {
     ...mapActions([
@@ -317,9 +365,9 @@ export default {
       const player = this.$refs.player;
       player.pause();
       this.playing = false;
-      setTimeout(() => {
-        this.playNext();
-      }, 3000);
+      // setTimeout(() => {
+      //   this.playNext();
+      // }, 3000);
     },
     playNext() {
       this.playProgress = '00:00';

@@ -55,7 +55,7 @@ export default {
   watch: {
     $route(to, from) {
       const noTitle = ['discovery', 'videos', 'friends'];
-      const withTitle = ['mine', 'accounts', 'events', 'follows', 'followeds', 'profile'];
+      const withTitle = ['mine', 'accounts', 'events', 'follows', 'followeds', 'profile', 'list'];
       if (noTitle.indexOf(to.name) !== -1) {
         this.titleStatus = false;
         this.showBack = false;
@@ -86,6 +86,10 @@ export default {
             break;
           case 5:
             this.title = '我的资料';
+            this.showBack = true;
+            break;
+          case 6:
+            this.title = '歌单';
             this.showBack = true;
             break;
           default:

@@ -63,7 +63,7 @@ export default {
         this.active = 0;
       } else if (['videos'].indexOf(name) !== -1) {
         this.active = 1;
-      } else if (['mine'].indexOf(name) !== -1) {
+      } else if (['mine', 'list'].indexOf(name) !== -1) {
         this.active = 2;
       } else if (['friends'].indexOf(name) !== -1) {
         this.active = 3;
