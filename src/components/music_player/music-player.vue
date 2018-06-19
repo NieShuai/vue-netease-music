@@ -1,12 +1,8 @@
 <template>
-  <div
-    class="music-player"
-    :style="musicPlayerStyle">
+  <div class="music-player" :style="musicPlayerStyle">
     <div class="music-player__inner">
       <div class="music-player__header">
-        <i
-          class="icon-back music-player__back"
-          @click="hideMusicPlayer"></i>
+        <i class="icon-back music-player__back" @click="hideMusicPlayer"></i>
         <div class="music-player__header__content">
           <div class="music-player__header__content__title">
             {{ title }}
@@ -15,9 +11,7 @@
             {{ artist }}
           </div>
         </div>
-        <i
-          class="icon-share music-player__share"
-          @click="hideMusicPlayer"></i>
+        <i class="icon-share music-player__share" @click="hideMusicPlayer"></i>
       </div>
       <div class="music-player__content">
         <audio
@@ -34,8 +28,7 @@
         </audio>
         <div class="music-player__content__panel">
           <div class="music-player__content__panel__mask">
-            <img
-              :src="playerResouces.needle"
+            <img :src="playerResouces.needle"
               :class="{
                 'music-player__content__panel__mask__needle': 1,
                 'music-player__content__panel__mask__needle--playing': playing,
@@ -43,11 +36,9 @@
             <div class="music-player__content__panel__mask__disk">
               <div class="music-player__content__panel__mask__disk__container">
                 <div class="music-player__content__panel__mask__disk__container__animation">
-                  <img
-                    :src="playerResouces.disk"
+                  <img :src="playerResouces.disk"
                     class="music-player__content__panel__mask__disk__container__disc-item">
-                  <img
-                    :src="coverUrl"
+                  <img :src="coverUrl"
                     class="music-player__content__panel__mask__disk__container__cover-item">
                 </div>
               </div>
@@ -63,14 +54,12 @@
         </div>
         <div class="music-player__content__controls">
           <div class="music-player__content__controls__progress">
-            <div
-              class="music-player__content__controls__progress__item
-                music-player__content__controls__progress__time">
+            <div class="music-player__content__controls__progress__item
+              music-player__content__controls__progress__time">
               {{ playProgress }}
             </div>
-            <div
-              class="music-player__content__controls__progress__item
-                music-player__content__controls__progress__slider">
+            <div class="music-player__content__controls__progress__item
+              music-player__content__controls__progress__slider">
               <van-slider
                 v-model="progress"
                 :step="0.1"
@@ -81,35 +70,31 @@
                 type="spinner"
                 class="music__loading"/>
             </div>
-            <div
-              class="music-player__content__controls__item
-                music-player__content__controls__progress__time">
+            <div class="music-player__content__controls__item
+              music-player__content__controls__progress__time">
               {{ musicLength }}
             </div>
           </div>
           <div class="music-player__content__controls__buttons">
-            <i
-              class="music-player__content__controls__buttons__item"
-              :class="playingTypeClass"
-              @click="changeType(false)"></i>
-            <i
-              class="icon-play-pre
-                music-player__content__controls__buttons__item"
-              @click="playPre"></i>
-            <i
-              class="music-player__content__controls__buttons__item
-                music-player__content__controls__play"
-              :class="playing ?
-                'icon-music-pause' :
-                'icon-music-play'"
-              @click="playMusic"></i>
-            <i
-              class="icon-play-next
-                music-player__content__controls__buttons__item"
-              @click="playNext"></i>
-            <i class="icon-list
-              music-player__content__controls__buttons__item"
-              @click="showListModal"></i>
+            <div class="music-player__content__controls__buttons__item">
+              <i :class="playingTypeClass" @click="changeType(false)"></i>
+            </div>
+            <div class="music-player__content__controls__buttons__item">
+              <i class="icon-play-pre" @click="playPre"></i>
+            </div>
+            <div class="music-player__content__controls__buttons__item">
+              <i class="music-player__content__controls__play"
+                :class="playing ?
+                  'icon-music-pause' :
+                  'icon-music-play'"
+                @click="playMusic"></i>
+            </div>
+            <div class="music-player__content__controls__buttons__item">
+              <i class="icon-play-next" @click="playNext"></i>
+            </div>
+            <div class="music-player__content__controls__buttons__item">
+              <i class="icon-list" @click="showListModal"></i>
+            </div>
           </div>
         </div>
       </div>
@@ -144,7 +129,7 @@
       </div>
       <div class="list__modal__footer" @click="listModalStatus = false">关闭</div>
     </van-popup> -->
-    <div class="list__modal">
+    <div class="list__modal" style="display: none;">
       <div class="list__modal__header">
         <i
           class="list__modal__header__play-type"
