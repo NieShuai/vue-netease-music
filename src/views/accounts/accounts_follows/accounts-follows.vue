@@ -1,5 +1,5 @@
 <template>
-  <div class="accounts__follows">
+  <div class="accounts__follows" ref="followswrapper">
     <div class="accounts__follows__content">
       <loading
         v-if="showLoading"
@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import BScroll from 'better-scroll';
 import userItem from 'components/user_item/user-item';
 import loading from 'components/loading/loading';
 import { mapGetters, mapActions } from 'vuex';
@@ -35,6 +36,12 @@ export default {
       if (data.code === 200) {
         this.follows = data.follow;
         this.showLoading = false;
+        this.$nextTick(() => {
+          const wrapper = document.querySelector('.accounts__follows');
+          const scroll = new BScroll(wrapper);
+          scroll.refresh();
+          console.log(wrapper, scroll);
+        });
       }
     });
   },

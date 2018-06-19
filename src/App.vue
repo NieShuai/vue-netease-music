@@ -13,9 +13,11 @@
         <router-view></router-view>
       </transition>
     </div>
-    <app-footer
-      :class="appStatusClasses"
-      @tab-change="onTabChange"></app-footer>
+    <div class="app__footer">
+      <app-footer
+        :class="appStatusClasses"
+        @tab-change="onTabChange"></app-footer>
+    </div>
   </div>
 </template>
 
