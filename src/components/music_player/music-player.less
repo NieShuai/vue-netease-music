@@ -253,11 +253,6 @@
   border-radius: 15px 15px 0 0;
   background-color: rgba(245, 245, 245, .95);
 
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  z-index: 9;
-
   &__header {
     height: 50px;
     line-height: 50px;
@@ -287,11 +282,16 @@
 
   &__content {
     height: calc(~"100% - 100px");
-    position: relative;
     overflow: hidden;
-    // overflow: auto;
-    // -webkit-overflow-scrolling: auto;
+    position: relative;
     text-align: left;
+
+    &__wrapper {
+      height: 100%;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      position: relative;
+    }
 
     &__song {
       height: 45px;

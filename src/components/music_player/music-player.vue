@@ -99,7 +99,7 @@
         </div>
       </div>
     </div>
-    <!-- <van-popup v-model="listModalStatus" position="bottom" class="list__modal">
+    <van-popup v-model="listModalStatus" position="bottom" class="list__modal">
       <div class="list__modal__header">
         <i
           class="list__modal__header__play-type"
@@ -110,55 +110,27 @@
         </span>
       </div>
       <div class="list__modal__content">
-        <ul class="list-content">
-          <li
-            v-for="(item, index) in playingList"
-            :key="index"
-            :class="{
-              'list__modal__content__song': 1,
-              'list__modal__content__song--playing': index === musicIndex,
-            }"
-            @click="setMusicIndex(index)">
-            <i
-              v-if="index === musicIndex"
-              class="icon-volume-on list__modal__content__song__voice"></i>
-            <span class="list__modal__content__song__name">{{ item.name }}</span>
-            <span class="list__modal__content__song__artist"> - {{ item.ar[0].name }}</span>
-          </li>
-        </ul>
+        <div class="list__modal__content__wrapper" ref="wrapper">
+          <ul class="list-content">
+            <li
+              v-for="(item, index) in playingList"
+              :key="index"
+              :class="{
+                'list__modal__content__song': 1,
+                'list__modal__content__song--playing': index === musicIndex,
+              }"
+              @click="setMusicIndex(index)">
+              <i
+                v-if="index === musicIndex"
+                class="icon-volume-on list__modal__content__song__voice"></i>
+              <span class="list__modal__content__song__name">{{ item.name }}</span>
+              <span class="list__modal__content__song__artist"> - {{ item.ar[0].name }}</span>
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="list__modal__footer" @click="listModalStatus = false">关闭</div>
-    </van-popup> -->
-    <div class="list__modal" style="display: none;">
-      <div class="list__modal__header">
-        <i
-          class="list__modal__header__play-type"
-          :class="playingTypeClass"
-          @click="changeType(true)"></i>
-        <span class="list__modal__header__play-type__text">
-          {{ typeText }}
-        </span>
-      </div>
-      <div class="list__modal__content" ref="wrapper">
-        <ul class="list-content">
-          <li
-            v-for="(item, index) in playingList"
-            :key="index"
-            :class="{
-              'list__modal__content__song': 1,
-              'list__modal__content__song--playing': index === musicIndex,
-            }"
-            @click="setMusicIndex(index)">
-            <i
-              v-if="index === musicIndex"
-              class="icon-volume-on list__modal__content__song__voice"></i>
-            <span class="list__modal__content__song__name">{{ item.name }}</span>
-            <span class="list__modal__content__song__artist"> - {{ item.ar[0].name }}</span>
-          </li>
-        </ul>
-      </div>
-      <div class="list__modal__footer" @click="listModalStatus = false">关闭</div>
-    </div>
+    </van-popup>
   </div>
 </template>
 
@@ -230,17 +202,18 @@ export default {
     },
   },
   watch: {
-    listModalStatus(newVal) {
-      if (newVal) {
-        this.$nextTick(() => {
-          this.listModalScroll = new BScroll(this.$refs.wrapper);
-          this.listModalScroll.refresh();
-        });
-      } else {
-        this.listModalScroll.destroy();
-        this.listModalScroll = null;
-      }
-    },
+    // listModalStatus(newVal) {
+    //   if (newVal) {
+    //     this.$nextTick(() => {
+    //       this.listModalScroll = new BScroll(this.$refs.wrapper, {
+    //         scrollY: true,
+    //       });
+    //       this.listModalScroll.refresh();
+    //     });
+    //   } else {
+    //     this.listModalScroll = null;
+    //   }
+    // },
     songObj: {
       immediate: true,
       handler(newVal) {
@@ -281,10 +254,10 @@ export default {
     },
   },
   mounted() {
-    this.$nextTick(() => {
-      this.listModalScroll = new BScroll(this.$refs.wrapper);
-      this.listModalScroll.refresh();
-    });
+    // this.$nextTick(() => {
+    //   this.listModalScroll = new BScroll(this.$refs.wrapper);
+    //   this.listModalScroll.refresh();
+    // });
   },
   methods: {
     ...mapActions([

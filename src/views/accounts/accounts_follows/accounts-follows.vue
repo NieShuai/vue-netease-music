@@ -1,5 +1,5 @@
 <template>
-  <div class="accounts__follows" ref="followswrapper">
+  <div class="accounts__follows" ref="followsWrapper">
     <div class="accounts__follows__content">
       <loading
         v-if="showLoading"
@@ -27,6 +27,7 @@ export default {
     return {
       showLoading: true,
       follows: [],
+      scroll: null,
     };
   },
   mounted() {
@@ -37,10 +38,7 @@ export default {
         this.follows = data.follow;
         this.showLoading = false;
         this.$nextTick(() => {
-          const wrapper = document.querySelector('.accounts__follows');
-          const scroll = new BScroll(wrapper);
-          scroll.refresh();
-          console.log(wrapper, scroll);
+          this.scroll = new BScroll(this.$refs.followsWrapper);
         });
       }
     });

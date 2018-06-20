@@ -1,5 +1,5 @@
 <template>
-  <div class="accounts__events">
+  <div class="accounts__events" ref="eventsWrapper">
     <div class="accounts__events__content">
       <loading
         v-if="showLoading"
@@ -65,6 +65,7 @@
 </template>
 
 <script>
+import BScroll from 'better-scroll';
 import loading from 'components/loading/loading';
 import { mapGetters, mapActions } from 'vuex';
 import { getEvent } from 'api/api';
@@ -76,6 +77,7 @@ export default {
       showLoading: true,
       user: null,
       events: [],
+      scroll: null,
     };
   },
   mounted() {
@@ -92,6 +94,9 @@ export default {
           });
         }
         this.showLoading = false;
+        this.$nextTick(() => {
+          this.scroll = new BScroll(this.$refs.eventsWrapper);
+        });
       }
     });
   },
