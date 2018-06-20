@@ -1,0 +1,55 @@
+.music__list__item {
+  height: 55px;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+
+  &__indexing {
+    line-height: 55px;
+    width: 40px;
+    text-align: center;
+    color: #696969;
+  }
+
+  &__detail {
+    border-top: 1px solid rgba(192, 192, 192, 0.4);
+    border-bottom: none;
+    flex-grow: 1;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    max-width: calc(~"100% - 40px");
+  }
+
+  &__infor {
+    flex-grow: 1;
+    width: calc(~"100% - 40px");
+
+    &__up {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-size: 16px;
+      padding: 10px 0 0 0;
+    }
+
+    &__bottom {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-size: 12px;
+      color: #696969;
+    }
+  }
+
+  &__more {
+    line-height: 55px;
+    width: 40px;
+    text-align: center;
+    color: #696969;
+  }
+}

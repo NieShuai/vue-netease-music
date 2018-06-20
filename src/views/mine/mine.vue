@@ -9,7 +9,7 @@
           v-for="(list, index) in myList"
           :key="index"
           :right-width="70">
-          <div class="mine__content__item" @click="showMusicList">
+          <div class="mine__content__item" @click="showMusicList(list)">
             <div class="mine__content__item__cover">
               <img :src="list.coverImgUrl" >
             </div>
@@ -58,8 +58,13 @@ export default {
     });
   },
   methods: {
-    showMusicList() {
-      this.$router.push('/list');
+    showMusicList(list) {
+      this.$router.push({
+        name: 'list',
+        params: {
+          id: list.id,
+        },
+      });
     },
   },
   components: {},

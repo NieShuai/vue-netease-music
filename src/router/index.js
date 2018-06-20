@@ -51,7 +51,7 @@ const router = new Router({
     name: 'profile',
     component: accountsProfile,
   }, {
-    path: '/list',
+    path: '/list/:id',
     name: 'list',
     component: musicList,
   }],
