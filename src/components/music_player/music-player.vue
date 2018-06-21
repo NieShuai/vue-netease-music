@@ -50,7 +50,13 @@
               <i class="icon-dot-v"></i>
             </div>
           </div>
-          <div class="music-player__content__panel__lyric"></div>
+          <div class="music-player__content__panel__lyric">
+            <ul>
+              <li
+                v-for="(item, index) in lyric"
+                :key="index">{{ item.txt }}</li>
+            </ul>
+          </div>
         </div>
         <div class="music-player__content__controls">
           <div class="music-player__content__controls__progress">
@@ -137,8 +143,8 @@
 <script>
 import BScroll from 'better-scroll';
 import { mapGetters, mapActions } from 'vuex';
-import { getMusicDetail } from 'api/api';
-import { formatTime, getRandom } from 'util/help';
+import { getMusicDetail, getLyric } from 'api/api';
+import { formatTime, getRandom, parseLyric } from 'util/help';
 
 const playerResouces = {
   disk: require('../../assets/player/player_disc.png'),
@@ -165,6 +171,7 @@ export default {
       resetAnimation: false,
       listModalStatus: false,
       listModalScroll: null,
+      lyric: [],
     };
   },
   computed: {
@@ -202,18 +209,6 @@ export default {
     },
   },
   watch: {
-    // listModalStatus(newVal) {
-    //   if (newVal) {
-    //     this.$nextTick(() => {
-    //       this.listModalScroll = new BScroll(this.$refs.wrapper, {
-    //         scrollY: true,
-    //       });
-    //       this.listModalScroll.refresh();
-    //     });
-    //   } else {
-    //     this.listModalScroll = null;
-    //   }
-    // },
     songObj: {
       immediate: true,
       handler(newVal) {
@@ -296,6 +291,13 @@ export default {
         obj.artist = playingObj.ar[0].name;
         obj.time = playingObj.dt;
         this.setPlayingSong(obj);
+        getLyric(playingObj.id).then((res) => {
+          const { data } = res;
+          if (data.code === 200) {
+            console.log(parseLyric(data.lrc.lyric));
+            this.lyric = parseLyric(data.lrc.lyric);
+          }
+        });
         this.$nextTick(() => {
           this.playMusic();
         });
@@ -330,9 +332,11 @@ export default {
       const player = this.$refs.player;
       player.pause();
       this.playing = false;
-      player.currentTime = 0;
-      player.play();
-      this.playing = true;
+      setTimeout(() => {
+        player.currentTime = 0;
+        player.play();
+        this.playing = true;
+      }, 1000);
     },
     playNext() {
       this.playProgress = '00:00';

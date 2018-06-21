@@ -57,3 +57,11 @@ export function getMusicDetail(ids) {
     },
   });
 }
+
+export function getLyric(id) {
+  return axios.get('/lyric', {
+    params: {
+      id,
+    },
+  });
+}
