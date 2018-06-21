@@ -40,7 +40,9 @@ export default {
     };
   },
   computed: {},
-  mounted() {},
+  created() {
+    this.$root.eventHub.$on('show-music-player', this.onShowMusicPlayer);
+  },
   methods: {
     back() {
       this.$router.go(-1);

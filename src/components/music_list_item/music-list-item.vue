@@ -1,11 +1,18 @@
 <template>
   <div class="music__list__item">
-    <div class="music__list__item__indexing">
+    <div class="music__list__item__indexing" v-if="activing">
+      <i class="icon-volume-on"></i>
+    </div>
+    <div class="music__list__item__indexing" v-else>
       {{ indexing }}
     </div>
     <div class="music__list__item__detail">
       <div class="music__list__item__infor">
-        <div class="music__list__item__infor__up">
+        <div
+          :class="{
+            'music__list__item__infor__up': 1,
+            'music__list__item__infor__up--activing': activing,
+          }">
           {{ itemObject.name }}
         </div>
         <div class="music__list__item__infor__bottom">
@@ -25,6 +32,7 @@ export default {
   props: {
     itemObject: Object,
     indexing: Number,
+    activing: Boolean,
   },
   date() {
     return {};

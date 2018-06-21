@@ -1,5 +1,5 @@
 <template>
-  <div class="accounts">
+  <div class="accounts" ref="accountsWrapper">
     <div class="accounts__content">
       <loading
         v-if="showLoading"
@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import BScroll from 'better-scroll';
 import loading from 'components/loading/loading';
 import { mapGetters, mapActions } from 'vuex';
 import { getUserDetail } from 'api/api';
@@ -69,6 +70,7 @@ export default {
   name: 'accounts',
   data() {
     return {
+      scroll: null,
       showLoading: true,
       isChild: false,
       avatar: '',
@@ -107,6 +109,11 @@ export default {
         this.detailItems[1].value = profile.follows;
         this.detailItems[2].value = profile.followeds;
         this.showLoading = false;
+        this.$nextTick(() => {
+          this.scroll = new BScroll(this.$refs.accountsWrapper, {
+            click: true,
+          });
+        });
       }
     });
   },

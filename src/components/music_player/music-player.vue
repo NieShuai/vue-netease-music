@@ -253,11 +253,8 @@ export default {
       this.getMusicDetails(newVal);
     },
   },
-  mounted() {
-    // this.$nextTick(() => {
-    //   this.listModalScroll = new BScroll(this.$refs.wrapper);
-    //   this.listModalScroll.refresh();
-    // });
+  created() {
+    this.$root.eventHub.$on('play-on-show', this.playOnShow);
   },
   methods: {
     ...mapActions([
@@ -326,6 +323,16 @@ export default {
       // setTimeout(() => {
       //   this.playNext();
       // }, 3000);
+    },
+    playOnShow() {
+      this.playProgress = '00:00';
+      this.resetAnimation = true;
+      const player = this.$refs.player;
+      player.pause();
+      this.playing = false;
+      player.currentTime = 0;
+      player.play();
+      this.playing = true;
     },
     playNext() {
       this.playProgress = '00:00';
@@ -405,6 +412,7 @@ export default {
     },
     hideMusicPlayer() {
       this.$emit('hide-music-player');
+      this.$root.eventHub.$emit('music-player-hidden');
     },
     playMusic() {
       if (this.$refs.player) {

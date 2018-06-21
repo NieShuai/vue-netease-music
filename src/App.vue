@@ -115,6 +115,7 @@ export default {
     },
   },
   mounted() {
+    document.body.addEventListener('touchstart', () => {});
     this.setMyList(this.uid);
   },
 };

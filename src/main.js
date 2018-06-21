@@ -16,6 +16,9 @@ Vue.use(Vant);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  data: {
+    eventHub: new Vue(),
+  },
   store,
   router,
   components: { App },

@@ -51,3 +51,7 @@ export function setPlayingSong({ commit }, param) {
 export function setPlayingIndex({ commit }, param) {
   commit(types.SET_PLAYING_INDEX, { param });
 }
+
+export function setPlayingList({ commit }, param) {
+  commit(types.SET_PLAYING_LIST, { param });
+}

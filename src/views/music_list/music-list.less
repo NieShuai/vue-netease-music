@@ -3,10 +3,12 @@
   width: 100%;
   position: absolute;
   top: -50px;
+  overflow: hidden;
 
   &__inner {
     width: 100%;
     height: 100%;
+    overflow: hidden;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -72,16 +74,15 @@
       position: relative;
     }
 
-    &__search {
-      font-size: 50px;
-    }
-
     &__detail {
       height: 200px;
 
       &__infor {
-        height: 150px;
+        height: 120px;
         padding: 10px;
+        display: flex;
+        flex-direction: row;
+        position: relative;
 
         &__img {
           width: 120px;
@@ -94,11 +95,78 @@
             border-radius: 5px;
           }
         }
+
+        &__describe {
+          flex-grow: 1;
+          padding-left: 15px;
+
+          &__name {
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            height: 60px;
+            line-height: 60px;
+          }
+
+          &__creator {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            position: relative;
+            color: #dcdcdc;
+
+            &__avatar {
+              width: 30px;
+              height: 30px;
+
+              & img {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+              }
+            }
+
+            &__nickname {
+              font-size: 12px;
+              margin-left: 5px;
+            }
+
+            &__arrow {
+              transform: rotate(180deg);
+              margin-left: 10px;
+            }
+          }
+        }
+      }
+
+      &__buttons {
+        width: 100%;
+        height: 50px;
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        &__item {
+          min-width: 25%;
+          flex-flow: 1;
+          text-align: center;
+          color: #fff;
+          font-size: 24px;
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          // line-height: 50px;
+
+          & span {
+            font-size: 12px;
+          }
+        }
       }
     }
 
     &__list {
-      height: calc(~"100% - 50px");
+      height: calc(~"100% - 100px");
       background-color: #fff;
       border-radius: 15px 15px 0 0;
       position: relative;
@@ -132,9 +200,14 @@
         }
       }
 
-      &__wrapper {
+      &__items {
+        height: calc(~"100% - 50px");
         position: relative;
         overflow: hidden;
+      }
+
+      &__wrapper {
+        position: relative;
 
         & .music__list__item:first-child .music__list__item__detail {
           border: none;
