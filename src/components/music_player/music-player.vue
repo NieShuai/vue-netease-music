@@ -139,7 +139,7 @@
         </span>
       </div>
       <div class="list__modal__content">
-        <div class="list__modal__content__wrapper" ref="wrapper">
+        <div class="list__modal__content__wrapper" ref="listWrapper">
           <ul class="list-content">
             <li
               v-for="(item, index) in playingList"
@@ -198,7 +198,6 @@ export default {
       lyric: [],
       volume: 100,
       lyricScroll: null,
-      containerHeight: 0,
     };
   },
   computed: {
@@ -264,6 +263,18 @@ export default {
         }
       },
     },
+    listModalStatus(newVal) {
+      if (newVal) {
+        this.$nextTick(() => {
+          this.listModalScroll = new BScroll(this.$refs.listWrapper, {
+            stopPropagation: true,
+            click: true,
+          });
+        });
+      } else {
+        this.listModalScroll.destroy();
+      }
+    },
     volume(newVal) {
       this.$refs.player.volume = newVal / 100;
     },
@@ -291,12 +302,12 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.containerHeight =
+      const containerHeight =
         document.querySelector('.music-player__content__panel__lyric__txt').clientHeight;
       this.lyricScroll = new BScroll(this.$refs.lyricContainer, {
         stopPropagation: true,
         click: true,
-        startY: this.containerHeight / 2,
+        startY: containerHeight / 2,
       });
     });
   },
@@ -434,11 +445,12 @@ export default {
             item.classList.remove('music-player__content__panel__lyric__txt__item--activing');
           }
         });
-        console.log(this.containerHeight);
+        const containerHeight =
+          document.querySelector('.music-player__content__panel__lyric__txt').clientHeight;
         const top =
           document.querySelector(
             '.music-player__content__panel__lyric__txt__item--activing').offsetTop;
-        this.lyricScroll.scrollTo(0, (this.containerHeight / 2) - top, 200);
+        this.lyricScroll.scrollTo(0, (containerHeight / 2) - top, 0);
       }
     },
     findCurLineIndex(time) {
