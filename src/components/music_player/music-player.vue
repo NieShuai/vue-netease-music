@@ -1,7 +1,11 @@
 <template>
   <div class="music-player" :style="musicPlayerStyle">
     <div class="music-player__inner">
-      <div class="music-player__header">
+      <div
+        :class="{
+          'music-player__header': 1,
+          'music-player__header__border': !showLyric,
+        }">
         <i class="icon-back music-player__back" @click="hideMusicPlayer"></i>
         <div class="music-player__header__content">
           <div class="music-player__header__content__title">
@@ -27,7 +31,9 @@
           @error="onError">
         </audio>
         <div class="music-player__content__panel">
-          <div class="music-player__content__panel__mask">
+          <div class="music-player__content__panel__mask"
+            v-show="!showLyric"
+            @click="lyricModel(true)">
             <img :src="playerResouces.needle"
               :class="{
                 'music-player__content__panel__mask__needle': 1,
@@ -50,12 +56,29 @@
               <i class="icon-dot-v"></i>
             </div>
           </div>
-          <div class="music-player__content__panel__lyric">
-            <ul>
-              <li
-                v-for="(item, index) in lyric"
-                :key="index">{{ item.txt }}</li>
-            </ul>
+          <div class="music-player__content__panel__lyric" v-show="showLyric">
+            <div class="music-player__content__panel__lyric__volume">
+              <i :class="volume === 0 ? 'icon-volume-off' : 'icon-volume-on'"></i>
+              <van-slider
+                class="music-player__content__panel__lyric__volume__slider"
+                v-model="volume"
+                :step="1"
+                :max="100"/>
+            </div>
+            <div
+              class="music-player__content__panel__lyric__txt"
+              ref="lyricContainer"
+              @click="lyricModel(false)">
+              <ul class="music-player__content__panel__lyric__txt__ul" ref="lyricUl">
+                <li
+                  v-for="(item, index) in lyric"
+                  :key="index"
+                  class="music-player__content__panel__lyric__txt__item"
+                  ref="lyricLine">
+                  {{ item.txt }}
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
         <div class="music-player__content__controls">
@@ -171,7 +194,11 @@ export default {
       resetAnimation: false,
       listModalStatus: false,
       listModalScroll: null,
+      showLyric: false,
       lyric: [],
+      volume: 100,
+      lyricScroll: null,
+      containerHeight: 0,
     };
   },
   computed: {
@@ -227,7 +254,18 @@ export default {
         document.styleSheets[0].addRule(
           '.music-player__inner::before',
           `background-image: url(${coverUrl})`);
+        if (songId) {
+          getLyric(songId).then((res) => {
+            const { data } = res;
+            if (data.code === 200) {
+              this.lyric = parseLyric(data.lrc.lyric);
+            }
+          });
+        }
       },
+    },
+    volume(newVal) {
+      this.$refs.player.volume = newVal / 100;
     },
     playing(newVal) {
       if (newVal && this.songLoaded) {
@@ -251,12 +289,26 @@ export default {
   created() {
     this.$root.eventHub.$on('play-on-show', this.playOnShow);
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.containerHeight =
+        document.querySelector('.music-player__content__panel__lyric__txt').clientHeight;
+      this.lyricScroll = new BScroll(this.$refs.lyricContainer, {
+        stopPropagation: true,
+        click: true,
+        startY: this.containerHeight / 2,
+      });
+    });
+  },
   methods: {
     ...mapActions([
       'setMusicIndex',
       'setPlayingType',
       'setPlayingSong',
     ]),
+    lyricModel(param) {
+      this.showLyric = param;
+    },
     showListModal() {
       this.listModalStatus = true;
     },
@@ -291,13 +343,6 @@ export default {
         obj.artist = playingObj.ar[0].name;
         obj.time = playingObj.dt;
         this.setPlayingSong(obj);
-        getLyric(playingObj.id).then((res) => {
-          const { data } = res;
-          if (data.code === 200) {
-            console.log(parseLyric(data.lrc.lyric));
-            this.lyric = parseLyric(data.lrc.lyric);
-          }
-        });
         this.$nextTick(() => {
           this.playMusic();
         });
@@ -322,9 +367,9 @@ export default {
       const player = this.$refs.player;
       player.pause();
       this.playing = false;
-      // setTimeout(() => {
-      //   this.playNext();
-      // }, 3000);
+      setTimeout(() => {
+        this.playNext();
+      }, 3000);
     },
     playOnShow() {
       this.playProgress = '00:00';
@@ -379,6 +424,34 @@ export default {
       if (!this.isChangingProgress) {
         this.progress = ((curTime * 1000) / this.time) * 100;
       }
+      // 处理歌词
+      const lineIndex = this.findCurLineIndex(curTime * 1000);
+      if (this.$refs.lyricLine) {
+        this.$refs.lyricLine.forEach((item, index) => {
+          if (lineIndex === index) {
+            item.classList.add('music-player__content__panel__lyric__txt__item--activing');
+          } else {
+            item.classList.remove('music-player__content__panel__lyric__txt__item--activing');
+          }
+        });
+        console.log(this.containerHeight);
+        const top =
+          document.querySelector(
+            '.music-player__content__panel__lyric__txt__item--activing').offsetTop;
+        this.lyricScroll.scrollTo(0, (this.containerHeight / 2) - top, 200);
+      }
+    },
+    findCurLineIndex(time) {
+      for (let i = 0; i < this.lyric.length; i += 1) {
+        if (time <= this.lyric[i].time) {
+          let num = i - 1;
+          if (num < 0) {
+            num = 0;
+          }
+          return num;
+        }
+      }
+      return this.lyric.length - 1;
     },
     onTouchStart() {
       this.isChangingProgress = true;
