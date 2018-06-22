@@ -148,7 +148,7 @@
                 'list__modal__content__song': 1,
                 'list__modal__content__song--playing': index === musicIndex,
               }"
-              @click="setMusicIndex(index)">
+              @click="playNew(index)">
               <i
                 v-if="index === musicIndex"
                 class="icon-volume-on list__modal__content__song__voice"></i>
@@ -235,9 +235,17 @@ export default {
     },
   },
   watch: {
+    musicIndex(newVal) {
+      this.progress = 0;
+      this.songLoaded = false;
+      this.playing = false;
+      this.lyric = [];
+      this.getMusicDetails(newVal);
+    },
     songObj: {
       immediate: true,
       handler(newVal) {
+        this.songId = null;
         const {
           artist,
           coverUrl,
@@ -290,15 +298,9 @@ export default {
         this.runAnimation();
       }
     },
-    musicIndex(newVal) {
-      this.progress = 0;
-      this.songLoaded = false;
-      this.playing = false;
-      this.getMusicDetails(newVal);
-    },
   },
   created() {
-    this.$root.eventHub.$on('play-on-show', this.playOnShow);
+    this.$root.eventHub.$on('play-on-show', this.onPlayOnShow);
   },
   mounted() {
     this.$nextTick(() => {
@@ -382,17 +384,22 @@ export default {
         this.playNext();
       }, 3000);
     },
-    playOnShow() {
+    onPlayOnShow() {
+      this.playNew(this.musicIndex);
+    },
+    playNew(newIndex) {
+      const player = this.$refs.player;
       this.playProgress = '00:00';
       this.resetAnimation = true;
-      const player = this.$refs.player;
       player.pause();
       this.playing = false;
-      setTimeout(() => {
+      if (newIndex !== this.musicIndex) {
+        this.setMusicIndex(newIndex);
+      } else {
         player.currentTime = 0;
         player.play();
         this.playing = true;
-      }, 1000);
+      }
     },
     playNext() {
       this.playProgress = '00:00';
@@ -445,12 +452,14 @@ export default {
             item.classList.remove('music-player__content__panel__lyric__txt__item--activing');
           }
         });
-        const containerHeight =
-          document.querySelector('.music-player__content__panel__lyric__txt').clientHeight;
-        const top =
-          document.querySelector(
-            '.music-player__content__panel__lyric__txt__item--activing').offsetTop;
-        this.lyricScroll.scrollTo(0, (containerHeight / 2) - top, 0);
+        const container = document.querySelector('.music-player__content__panel__lyric__txt');
+        const containerHeight = container.clientHeight;
+        const activingLyric =
+          document.querySelector('.music-player__content__panel__lyric__txt__item--activing');
+        if (activingLyric) {
+          const top = activingLyric.offsetTop;
+          this.lyricScroll.scrollTo(0, (containerHeight / 2) - top, 0);
+        }
       }
     },
     findCurLineIndex(time) {

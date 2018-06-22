@@ -122,9 +122,7 @@ export default {
           `background-image: url(${this.coverUrl})`);
         this.setHeight();
         this.showLoading = false;
-        this.$nextTick(() => {
-          this.setScroll();
-        });
+        this.setScroll();
       }
     });
   },
@@ -150,42 +148,46 @@ export default {
       'setPlayingSong',
     ]),
     setScroll() {
-      this.musicListScroll = new BScroll(this.$refs.musicListWrapper, {
-        click: true,
-        probeType: 3,
-        bounce: {
-          bottom: false,
-        },
-      });
-      this.listItemScroll = new BScroll(this.$refs.listItemsWrapper, {
-        click: true,
-        probeType: 3,
-        bounce: {
-          top: false,
-        },
-      });
-      this.listItemScroll.disable();
-      this.musicListScroll.on('scroll', (e) => {
-        if (e.y <= -100) {
-          this.title = this.listName;
-        } else {
-          this.title = '歌单';
-        }
-        if (e.y <= -199) {
-          this.musicListScroll.scrollTo(0, -200, 0);
-          this.musicListScroll.stop();
-          this.musicListScroll.disable();
-          this.listItemScroll.enable();
-          this.listItemScroll.refresh();
-        }
-      });
-      this.listItemScroll.on('scroll', (e) => {
-        if (e.y >= -1) {
-          this.listItemScroll.scrollTo(0, 0, 0);
-          this.listItemScroll.stop();
+      this.$nextTick(() => {
+        if (this.$refs.musicListWrapper && this.$refs.listItemsWrapper) {
+          this.musicListScroll = new BScroll(this.$refs.musicListWrapper, {
+            click: true,
+            probeType: 3,
+            bounce: {
+              bottom: false,
+            },
+          });
+          this.listItemScroll = new BScroll(this.$refs.listItemsWrapper, {
+            click: true,
+            probeType: 3,
+            bounce: {
+              top: false,
+            },
+          });
           this.listItemScroll.disable();
-          this.musicListScroll.enable();
-          this.musicListScroll.refresh();
+          this.musicListScroll.on('scroll', (e) => {
+            if (e.y <= -100) {
+              this.title = this.listName;
+            } else {
+              this.title = '歌单';
+            }
+            if (e.y <= -199) {
+              this.musicListScroll.scrollTo(0, -200, 0);
+              this.musicListScroll.stop();
+              this.musicListScroll.disable();
+              this.listItemScroll.enable();
+              this.listItemScroll.refresh();
+            }
+          });
+          this.listItemScroll.on('scroll', (e) => {
+            if (e.y >= -1) {
+              this.listItemScroll.scrollTo(0, 0, 0);
+              this.listItemScroll.stop();
+              this.listItemScroll.disable();
+              this.musicListScroll.enable();
+              this.musicListScroll.refresh();
+            }
+          });
         }
       });
     },
@@ -196,9 +198,7 @@ export default {
         this.musicListScroll = null;
         this.listItemScroll = null;
       }
-      this.$nextTick(() => {
-        this.setScroll();
-      });
+      this.setScroll();
     },
     onItemClick(item, index) {
       const listId = this.$route.params.id;
