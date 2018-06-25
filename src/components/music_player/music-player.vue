@@ -90,6 +90,7 @@
               <van-slider
                 v-model="progress"
                 :step="0.1"
+                @click.native="onClick"
                 @touchstart.native="onTouchStart"
                 @touchend.native="onTouchEnd"/>
               <van-loading
@@ -194,7 +195,7 @@ export default {
       listModalScroll: null,
       showLyric: false,
       lyric: [],
-      volume: 100,
+      volume: 20,
       lyricScroll: null,
     };
   },
@@ -309,6 +310,7 @@ export default {
         click: true,
         startY: containerHeight / 2,
       });
+      this.$refs.player.volume = this.volume / 100;
     });
   },
   methods: {
@@ -387,23 +389,25 @@ export default {
     },
     playNew(newIndex) {
       const player = this.$refs.player;
-      this.playProgress = '00:00';
-      this.resetAnimation = true;
       player.pause();
       this.playing = false;
-      if (newIndex !== this.musicIndex) {
-        this.setMusicIndex(newIndex);
-      } else {
-        player.currentTime = 0;
-        player.play();
-        this.playing = true;
-      }
-    },
-    playNext() {
       this.playProgress = '00:00';
       this.resetAnimation = true;
+      setTimeout(() => {
+        if (newIndex !== this.musicIndex) {
+          this.setMusicIndex(newIndex);
+        } else {
+          player.currentTime = 0;
+          player.play();
+          this.playing = true;
+        }
+      }, 500);
+    },
+    playNext() {
       this.$refs.player.pause();
       this.playing = false;
+      this.playProgress = '00:00';
+      this.resetAnimation = true;
       let newPlayingIndex = 0;
       if (this.playingType === 0 || this.playingType === 2) {
         newPlayingIndex = this.musicIndex + 1;
@@ -413,13 +417,15 @@ export default {
       } else {
         newPlayingIndex = getRandom(0, this.playingList.length - 1);
       }
-      this.setMusicIndex(newPlayingIndex);
+      setTimeout(() => {
+        this.setMusicIndex(newPlayingIndex);
+      }, 500);
     },
     playPre() {
-      this.playProgress = '00:00';
-      this.resetAnimation = true;
       this.$refs.player.pause();
       this.playing = false;
+      this.playProgress = '00:00';
+      this.resetAnimation = true;
       let newPlayingIndex = 0;
       if (this.playingType === 0 || this.playingType === 2) {
         newPlayingIndex = this.musicIndex - 1;
@@ -429,7 +435,9 @@ export default {
       } else {
         newPlayingIndex = getRandom(0, this.playingList.length - 1);
       }
-      this.setMusicIndex(newPlayingIndex);
+      setTimeout(() => {
+        this.setMusicIndex(newPlayingIndex);
+      }, 500);
     },
     onCanPlayThrough() {
       this.songLoaded = true;
@@ -471,6 +479,10 @@ export default {
         }
       }
       return this.lyric.length - 1;
+    },
+    onClick() {
+      this.isChangingProgress = true;
+      this.onTouchEnd();
     },
     onTouchStart() {
       this.isChangingProgress = true;
