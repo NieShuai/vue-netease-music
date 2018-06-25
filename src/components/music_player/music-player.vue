@@ -31,15 +31,13 @@
           @error="onError">
         </audio>
         <div class="music-player__content__panel">
-          <div class="music-player__content__panel__mask"
-            v-show="!showLyric"
-            @click="lyricModel(true)">
+          <div class="music-player__content__panel__mask" v-show="!showLyric">
             <img :src="playerResouces.needle"
               :class="{
                 'music-player__content__panel__mask__needle': 1,
                 'music-player__content__panel__mask__needle--playing': playing,
               }">
-            <div class="music-player__content__panel__mask__disk">
+            <div class="music-player__content__panel__mask__disk" @click="lyricModel(true)">
               <div class="music-player__content__panel__mask__disk__container">
                 <div class="music-player__content__panel__mask__disk__container__animation">
                   <img :src="playerResouces.disk"
