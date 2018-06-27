@@ -101,6 +101,7 @@ export default {
     getUserDetail(this.uid).then((res) => {
       const { data } = res;
       if (data.code === 200) {
+        this.setUserObject(data);
         const { profile, level } = data;
         this.avatar = profile.avatarUrl;
         this.nickName = profile.nickname;
@@ -117,11 +118,6 @@ export default {
       }
     });
   },
-  watch: {
-    // $router(newVal, oldVal) {
-    //   console.log(newVal, oldVal);
-    // },
-  },
   computed: {
     ...mapGetters([
       'uid',
@@ -129,7 +125,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'updateUid',
+      'setUserObject',
     ]),
     toDetailPage(item) {
       this.isChild = true;

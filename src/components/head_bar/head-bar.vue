@@ -43,6 +43,11 @@ export default {
   created() {
     this.$root.eventHub.$on('show-music-player', this.onShowMusicPlayer);
   },
+  watch: {
+    $route(to, from) {
+      this.onHideMusicPlayer();
+    },
+  },
   methods: {
     back() {
       this.$router.go(-1);

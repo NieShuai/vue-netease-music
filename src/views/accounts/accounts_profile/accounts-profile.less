@@ -1,0 +1,74 @@
+.accounts__profile {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: #efefef;
+
+  &__content {
+    position: relative;
+    
+    &__group {
+      background-color: #ffffff;
+      margin-top: 10px;
+
+      &__item {
+        height: 60px;
+        line-height: 60px;
+        margin-left: 10px;
+        width: calc(~"100% - 10px");
+        border-bottom: 1px solid #efefef;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        & span {
+          flex-grow: 1;
+        }
+
+        &__avatar {
+          height: 40px;
+          width: 40px;
+          padding: 10px 5px;
+
+          & img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+          }
+        }
+
+        &__background {
+          height: 40px;
+          width: 40px;
+          padding: 10px 5px;
+
+          & img {
+            height: 40px;
+            width: 40px;
+          }
+        }
+
+        &__text {
+          line-height: 60px;
+          padding-right: 5px;
+          color: #c4c4c4;
+          font-size: 14px;
+        }
+
+        &__arrow {
+          transform: rotate(180deg);
+          line-height: 60px;
+          font-size: 20px;
+          font-weight: bold;
+          color: #c4c4c4;
+          margin-right: 5px;
+        }
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}
