@@ -27,31 +27,33 @@
         </div>
         <div class="accounts__content__card__detail">
           <div
-            class="accounts__content__card__detail__item"
+            class="accounts__content__card__detail__item__container"
             v-for="(item, index) in detailItems"
             :key="index"
             @click="toDetailPage(item)">
-            <div
-              v-if="item.isIcon"
-              class="accounts__content__card__detail__item__up
-                accounts__content__card__detail__item__up__is-icon">
-              <i :class="item.key"></i>
-            </div>
-            <div
-              v-else
-              class="accounts__content__card__detail__item__up">
-              {{ item.key }}
-            </div>
-            <div
-              v-if="item.isIcon"
-              class="accounts__content__card__detail__item__bottom
-                accounts__content__card__detail__item__bottom__is-icon">
-              {{ item.value }}
-            </div>
-            <div
-              v-else
-              class="accounts__content__card__detail__item__bottom">
-              {{ item.value }}
+            <div class="accounts__content__card__detail__item">
+              <div
+                v-if="item.isIcon"
+                class="accounts__content__card__detail__item__up
+                  accounts__content__card__detail__item__up__is-icon">
+                <i :class="item.key"></i>
+              </div>
+              <div
+                v-else
+                class="accounts__content__card__detail__item__up">
+                {{ item.key }}
+              </div>
+              <div
+                v-if="item.isIcon"
+                class="accounts__content__card__detail__item__bottom
+                  accounts__content__card__detail__item__bottom__is-icon">
+                {{ item.value }}
+              </div>
+              <div
+                v-else
+                class="accounts__content__card__detail__item__bottom">
+                {{ item.value }}
+              </div>
             </div>
           </div>
         </div>

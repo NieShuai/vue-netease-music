@@ -1,4 +1,16 @@
 /* eslint-disable */
+// 格式化日期ms转换成y m d
+export function getTime(time) {
+  const da = new Date(time);
+  const year = da.getFullYear();
+  const month = da.getMonth() + 1;
+  const date = da.getDate();
+  return {
+    year,
+    month,
+    date,
+  };
+}
 
 // 将秒转换成分:秒
 export function formatTime(seconds) {

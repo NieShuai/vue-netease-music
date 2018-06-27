@@ -15,12 +15,25 @@
       &__item {
         height: 60px;
         line-height: 60px;
-        margin-left: 10px;
         width: calc(~"100% - 10px");
         border-bottom: 1px solid #efefef;
         display: flex;
         flex-direction: row;
         align-items: center;
+
+        &__container {
+          padding-left: 10px;
+          width: 100%;
+          position: relative;
+
+          &:active {
+            background-color: #f5f5f5;
+          }
+
+          &__text:active {
+            background-color: #ffffff;
+          }
+        }
 
         & span {
           flex-grow: 1;
@@ -54,6 +67,10 @@
           padding-right: 5px;
           color: #c4c4c4;
           font-size: 14px;
+          max-width: 40%;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
         }
 
         &__arrow {
@@ -65,8 +82,24 @@
           margin-right: 5px;
         }
 
-        &:last-child {
-          border-bottom: none;
+        &__smaller {
+          height: 45px;
+          line-height: 45px;
+
+          & .accounts__profile__content__group__item__text,
+          & .accounts__profile__content__group__item__arrow {
+            line-height: 45px;
+          }
+        }
+      }
+
+      &__textarea {
+        height: 115px;
+        position: relative;
+
+        & .van-field {
+          padding: 10px 5px;
+          height: 100%;
         }
       }
     }

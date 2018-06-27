@@ -69,6 +69,7 @@ import BScroll from 'better-scroll';
 import loading from 'components/loading/loading';
 import { mapGetters, mapActions } from 'vuex';
 import { getEvent } from 'api/api';
+import { getTime } from 'util/help';
 
 export default {
   name: 'accountsEvents',
@@ -122,11 +123,9 @@ export default {
       return type;
     },
     formatTime(time) {
-      const da = new Date(time);
-      const year = ''.concat(da.getFullYear(), '年');
-      const month = ''.concat(da.getMonth() + 1, '月');
-      const date = ''.concat(da.getDate(), '日');
-      return year.concat(month, date);
+      const times = getTime(time);
+      const { year, month, date } = times;
+      return ''.concat(year, '年', month, '月', date, '日');
     },
   },
   components: {
