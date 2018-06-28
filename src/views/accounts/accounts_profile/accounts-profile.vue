@@ -41,6 +41,9 @@
         <div class="accounts__profile__content__group__item__container">
           <div class="accounts__profile__content__group__item">
             <span>二维码</span>
+            <div class="accounts__profile__content__group__item__text">
+              <i class="icon-qr-code"></i>
+            </div>
             <i class="icon-back accounts__profile__content__group__item__arrow"></i>
           </div>
         </div>
@@ -140,9 +143,11 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.profileScroll = new BScroll(this.$refs.profileWrapper, {
-        click: true,
-      });
+      if (this.$refs.profileWrapper) {
+        this.profileScroll = new BScroll(this.$refs.profileWrapper, {
+          click: true,
+        });
+      }
     });
   },
   computed: {

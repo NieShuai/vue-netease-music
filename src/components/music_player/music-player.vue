@@ -273,17 +273,21 @@ export default {
     listModalStatus(newVal) {
       if (newVal) {
         this.$nextTick(() => {
-          this.listModalScroll = new BScroll(this.$refs.listWrapper, {
-            stopPropagation: true,
-            click: true,
-          });
+          if (this.$refs.listWrapper) {
+            this.listModalScroll = new BScroll(this.$refs.listWrapper, {
+              stopPropagation: true,
+              click: true,
+            });
+          }
         });
       } else {
         this.listModalScroll.destroy();
       }
     },
     volume(newVal) {
-      this.$refs.player.volume = newVal / 100;
+      if (this.$refs.player) {
+        this.$refs.player.volume = newVal / 100;
+      }
     },
     playing(newVal) {
       if (newVal && this.songLoaded) {
@@ -303,14 +307,18 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      const containerHeight =
-        document.querySelector('.music-player__content__panel__lyric__txt').clientHeight;
-      this.lyricScroll = new BScroll(this.$refs.lyricContainer, {
-        stopPropagation: true,
-        click: true,
-        startY: containerHeight / 2,
-      });
-      this.$refs.player.volume = this.volume / 100;
+      if (this.$refs.lyricContainer) {
+        const containerHeight =
+          document.querySelector('.music-player__content__panel__lyric__txt').clientHeight;
+        this.lyricScroll = new BScroll(this.$refs.lyricContainer, {
+          stopPropagation: true,
+          click: true,
+          startY: containerHeight / 2,
+        });
+      }
+      if (this.$refs.player) {
+        this.$refs.player.volume = this.volume / 100;
+      }
     });
   },
   methods: {

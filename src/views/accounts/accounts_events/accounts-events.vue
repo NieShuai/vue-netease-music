@@ -7,58 +7,10 @@
       <div
         v-else
         v-for="(event, index) in events"
-        :key="index"
-        class="accounts__events__content__item">
-        <div
-          class="accounts__events__content__item__child
-            accounts__events__content__item__avatar-container">
-          <div class="accounts__events__content__item__avatar">
-            <img :src="user.avatarUrl">
-          </div>
-        </div>
-        <div
-          class="accounts__events__content__item__child
-            accounts__events__content__item__share">
-          <div
-            class="accounts__events__content__item__share__item
-              accounts__events__content__item__share__item__user">
-            <span class="accounts__events__content__item__share__item__nickname">
-              {{ user.nickname }}
-            </span>分享{{ getShareType(event.type) }}:
-          </div>
-          <div
-            class="accounts__events__content__item__share__item
-              accounts__events__content__item__share__item__time">
-            {{ formatTime(event.eventTime) }}
-          </div>
-          <div
-            v-if="event.parsedJson.msg.length > 0"
-            class="accounts__events__content__item__share__item
-              accounts__events__content__item__share__item__msg">
-            {{ event.parsedJson.msg }}
-          </div>
-          <div
-            class="accounts__events__content__item__share__item
-              accounts__events__content__item__share__item__detail">
-            detail
-          </div>
-          <div
-            class="accounts__events__content__item__share__item
-              accounts__events__content__item__share__item__buttons">
-            <div class="accounts__events__content__item__share__item__buttons__item">
-              <i class="icon-good"></i> 赞
-            </div>
-            <div class="accounts__events__content__item__share__item__buttons__item">
-              <i class="icon-comment"></i> 评论
-            </div>
-            <div class="accounts__events__content__item__share__item__buttons__item">
-              <i class="icon-share"></i> 分享
-            </div>
-            <div class="accounts__events__content__item__share__item__buttons__item">
-              <i class="icon-dot-h"></i>
-            </div>
-          </div>
-        </div>
+        :key="index">
+        <event-item
+          :user="user"
+          :event="event"></event-item>
       </div>
     </div>
   </div>
@@ -67,9 +19,9 @@
 <script>
 import BScroll from 'better-scroll';
 import loading from 'components/loading/loading';
+import eventItem from 'components/event_item/event-item';
 import { mapGetters, mapActions } from 'vuex';
 import { getEvent } from 'api/api';
-import { getTime } from 'util/help';
 
 export default {
   name: 'accountsEvents',
@@ -96,7 +48,9 @@ export default {
         }
         this.showLoading = false;
         this.$nextTick(() => {
-          this.scroll = new BScroll(this.$refs.eventsWrapper);
+          if (this.$refs.eventsWrapper) {
+            this.scroll = new BScroll(this.$refs.eventsWrapper);
+          }
         });
       }
     });
@@ -106,30 +60,10 @@ export default {
       'uid',
     ]),
   },
-  methods: {
-    getShareType(code) {
-      let type = '';
-      switch (code) {
-        case 18:
-          type = '单曲';
-          break;
-        case 21:
-          type = '视频';
-          break;
-        default:
-          type = '';
-          break;
-      }
-      return type;
-    },
-    formatTime(time) {
-      const times = getTime(time);
-      const { year, month, date } = times;
-      return ''.concat(year, '年', month, '月', date, '日');
-    },
-  },
+  methods: {},
   components: {
     loading,
+    eventItem,
   },
 };
 </script>

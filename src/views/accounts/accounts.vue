@@ -22,7 +22,8 @@
             </div>
           </div>
           <div class="accounts__content__card__infor__sign">
-            签到
+            <i class="icon-gold-coin accounts__content__card__infor__sign__item"></i>
+            <span class="accounts__content__card__infor__sign__item">签到</span>
           </div>
         </div>
         <div class="accounts__content__card__detail">
@@ -113,9 +114,11 @@ export default {
         this.detailItems[2].value = profile.followeds;
         this.showLoading = false;
         this.$nextTick(() => {
-          this.scroll = new BScroll(this.$refs.accountsWrapper, {
-            click: true,
-          });
+          if (this.$refs.accountsWrapper) {
+            this.scroll = new BScroll(this.$refs.accountsWrapper, {
+              click: true,
+            });
+          }
         });
       }
     });

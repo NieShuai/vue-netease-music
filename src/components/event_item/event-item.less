@@ -1,0 +1,84 @@
+.event-item {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid #efefef;
+
+  &__child {
+    position: relative;
+    padding: 15px 0;
+    align-self: flex-start;
+  }
+
+  &__avatar {
+    width: 50px;
+    height: 50px;
+    padding: 10px;
+    padding-top: 0;
+    border-radius: 50%;
+    position: relative;
+
+    & img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+  }
+
+  &__share {
+    flex-grow: 1;
+    padding-right: 15px;
+
+    &__item {
+      word-wrap: break-word;
+      word-break: break-all;
+
+      &__user {
+        color: gray;
+        font-size: 14px;
+      }
+
+      &__nickname {
+        color: #87CEEB;
+        margin-right: 2px;
+      }
+
+      &__time {
+        color: gray;
+        font-size: 11px;
+      }
+
+      &__msg {
+        margin-top: 10px;
+      }
+
+      &__detail {
+        margin-top: 5px;
+        padding: 5px;
+        background-color: #efefef;
+        border-radius: 5px;
+      }
+
+      &__buttons {
+        margin-top: 10px;
+        display: flex;
+        display: -webkit-flex;
+        flex-direction: row;
+        align-items: center;
+
+        &__item {
+          flex-grow: 1;
+          color: gray;
+          font-size: 14px;
+
+          &:last-child {
+            text-align: right;
+            padding-right: 5px;
+          }
+        }
+      }
+    }
+  }
+}

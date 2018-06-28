@@ -38,7 +38,9 @@ export default {
         this.followeds = data.followeds;
         this.showLoading = false;
         this.$nextTick(() => {
-          this.scroll = new BScroll(this.$refs.followedsWrapper);
+          if (this.$refs.followedsWrapper) {
+            this.scroll = new BScroll(this.$refs.followedsWrapper);
+          }
         });
       }
     });

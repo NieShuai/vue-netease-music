@@ -28,7 +28,9 @@
                   <div class="music-list__content__detail__infor__describe__creator__avatar">
                     <img :src="creator.avatarUrl" alt="">
                   </div>
-                  <div class="music-list__content__detail__infor__describe__creator__nickname">
+                  <div
+                    class="music-list__content__detail__infor__describe__creator__nickname"
+                    @click="jumpToUserInfor(creator.userId)">
                     {{ creator.nickname }}
                   </div>
                   <div class="music-list__content__detail__infor__describe__creator__arrow">
@@ -147,6 +149,14 @@ export default {
       'setMusicIndex',
       'setPlayingSong',
     ]),
+    jumpToUserInfor(userId) {
+      this.$router.push({
+        name: 'infor',
+        params: {
+          id: userId,
+        },
+      });
+    },
     setScroll() {
       this.$nextTick(() => {
         if (this.$refs.musicListWrapper && this.$refs.listItemsWrapper) {
@@ -269,7 +279,7 @@ export default {
       if (wrapDom && targetDom) {
         targetDom.style.height = `${wrapDom.clientHeight - 50}px`;
       }
-    }
+    },
   },
   components: {
     musicListItem,

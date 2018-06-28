@@ -10,6 +10,7 @@ import accountsFollows from 'views/accounts/accounts_follows/accounts-follows';
 import accountsFolloweds from 'views/accounts/accounts_followeds/accounts-followeds';
 import accountsProfile from 'views/accounts/accounts_profile/accounts-profile';
 import musicList from 'views/music_list/music-list';
+import userInfor from 'views/user_infor/user-infor';
 
 Vue.use(Router);
 
@@ -54,6 +55,10 @@ const router = new Router({
     path: '/list/:id',
     name: 'list',
     component: musicList,
+  }, {
+    path: '/infor/:id',
+    name: 'infor',
+    component: userInfor,
   }],
 });
 

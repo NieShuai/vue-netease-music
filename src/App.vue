@@ -54,7 +54,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-      const noTitle = ['discovery', 'videos', 'friends'];
+      const noTitle = ['discovery', 'videos', 'friends', 'infor'];
       const withTitle = ['mine', 'accounts', 'events', 'follows', 'followeds', 'profile', 'list'];
       if (noTitle.indexOf(to.name) !== -1) {
         this.titleStatus = false;

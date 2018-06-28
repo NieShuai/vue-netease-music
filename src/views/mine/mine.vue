@@ -52,9 +52,11 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.scroll = new BScroll(this.$refs.mineWrapper, {
-        click: true,
-      });
+      if (this.$refs.mineWrapper) {
+        this.scroll = new BScroll(this.$refs.mineWrapper, {
+          click: true,
+        });
+      }
     });
   },
   methods: {
